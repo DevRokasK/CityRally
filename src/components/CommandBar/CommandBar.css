@@ -11,6 +11,11 @@
     margin: 0 8px;
 }
 
+.iconColor {
+    display: inline-block;
+    align-self: center;
+}
+
 :hover.iconColor {
     color: #D59330;
 }
@@ -21,4 +26,39 @@
 
 :hover.buttonText {
     color: black;
+}
+
+.eventTitle {
+    font-weight: bold;
+    display: inline-block;
+    align-self: center;
+}
+
+.eventTitleEdit {
+    display: inline-block;
+    align-self: center;
+    width: 360px;
+}
+
+.eventEdit {
+    color: rgba(0, 0, 0, 0.54);
+    padding-left: 24px;
+    display: flex;
+}
+
+:hover.eventEdit {
+    color: #D59330;
+    cursor: pointer;
+}
+
+.eventSettings {
+    padding: 4px;
+    display: inline-block;
+    align-self: center;
+}
+
+.eventSave {
+    margin-left: auto;
+    display: flex;
+    gap: 16px;
 }

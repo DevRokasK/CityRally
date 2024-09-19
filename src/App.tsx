@@ -4,13 +4,16 @@ import { observer } from 'mobx-react-lite';
 import './styles/App.css';
 
 import { Home } from './pages/Home';
-import { Event } from './pages/Event';
+import { EventPage } from './pages/EventPage';
 import { Login } from './pages/Login';
 import { Header } from './components/Header/Header';
 import { Footer } from './components/Footer/Footer';
+import { RootStore } from './stores/RootStore';
 
 
 const App = observer(() => {
+  const store = new RootStore();
+
   return (
     <div className="App">
       <header >
@@ -18,8 +21,8 @@ const App = observer(() => {
       </header>
       <main>
         <Routes>
-          <Route path='/' element={<Home />} />
-          <Route path='/Event' element={<Event />} />
+          <Route path='/' element={<Home eventStore={store.eventStore} />} />
+          <Route path='/Event/:id' element={<EventPage eventStore={store.eventStore} />} />
           <Route path='/Login' element={<Login />} />
         </Routes>
       </main>

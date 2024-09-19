@@ -2,22 +2,23 @@ import { observer } from "mobx-react-lite"
 
 import "./EventBar.css";
 import { EventCard } from "../EventCard/EventCard";
+import { Event } from "../../models/Event";
 
-export interface IEventBar {
+export interface IEventBarProps {
     title: string;
-    count: number;
+    events: Event[];
 }
 
-export const EventBar = observer((props: IEventBar) => {
-    const { title, count } = props;
+export const EventBar = observer((props: IEventBarProps) => {
+    const { title, events } = props;
 
-    if (count === 0) {
+    if (events.length === 0) {
         return null;
     }
 
-    const eventCards = Array.from({ length: count }, (_, index) => (
-        <EventCard key={index} />
-    ));
+    const eventCards = events.map(event => {
+        return <EventCard key={event.id} event={event} />;
+    });
 
     return (
         <div className="eventBar">
