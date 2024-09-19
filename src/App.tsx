@@ -1,60 +1,33 @@
-import React from 'react';
-import './App.css';
-import Box from '@mui/material/Box';
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
+import { Route, Routes } from 'react-router-dom';
+import { observer } from 'mobx-react-lite';
 
-function App() {
-  const bull = (
-    <Box
-      component="span"
-      sx={{ display: 'inline-block', mx: '2px', transform: 'scale(0.8)' }}
-    >
-      •
-    </Box>
-  );
-  const card = (
-    <React.Fragment>
-      <CardContent>
-        <Typography gutterBottom sx={{ color: 'text.secondary', fontSize: 14 }}>
-          Word of the Day
-        </Typography>
-        <Typography variant="h5" component="div">
-          be{bull}nev{bull}o{bull}lent
-        </Typography>
-        <Typography sx={{ color: 'text.secondary', mb: 1.5 }}>adjective</Typography>
-        <Typography variant="body2">
-          well meaning and kindly.
-          <br />
-          {'"a benevolent smile"'}
-        </Typography>
-      </CardContent>
-      <CardActions>
-        <Button size="small">Learn More</Button>
-      </CardActions>
-    </React.Fragment>
-  );
+import './styles/App.css';
+
+import { Home } from './pages/Home';
+import { Event } from './pages/Event';
+import { Login } from './pages/Login';
+import { Header } from './components/Header/Header';
+import { Footer } from './components/Footer/Footer';
+
+
+const App = observer(() => {
   return (
     <div className="App">
-      <header className="App-header">
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-        <Card variant="outlined">{card}</Card>
+      <header >
+        <Header />
       </header>
+      <main>
+        <Routes>
+          <Route path='/' element={<Home />} />
+          <Route path='/Event' element={<Event />} />
+          <Route path='/Login' element={<Login />} />
+        </Routes>
+      </main>
+      <footer>
+        <Footer />
+      </footer>
     </div>
   );
-}
+});
 
 export default App;

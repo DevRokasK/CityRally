@@ -1,0 +1,24 @@
+.commandBar {
+    display: flex;
+    flex-direction: row;
+    align-items: left;
+    justify-content: left;
+    height: 38px;
+    padding: 8px 8px;
+}
+
+.item {
+    margin: 0 8px;
+}
+
+:hover.iconColor {
+    color: #D59330;
+}
+
+.buttonText {
+    color: white;
+}
+
+:hover.buttonText {
+    color: black;
+}

@@ -1,0 +1,14 @@
+body {
+  margin: 0;
+}
+
+.App {
+  text-align: center;
+}
+
+.events {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  height: 720px;
+  margin-top: 16px;
+}

@@ -1,0 +1,16 @@
+.eventCard {
+    margin-bottom: 16px;
+}
+
+.cardTitle {
+    border-bottom: 1px solid;
+    font-weight: bold;
+    color: white;
+}
+
+.cardText {
+    font-weight: bold;
+    color: white;
+    column-count: 2;
+    column-gap: "32px";
+}

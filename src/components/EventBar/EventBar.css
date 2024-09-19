@@ -1,0 +1,29 @@
+.eventBar {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    justify-content: left;
+    height: 100%;
+    overflow: hidden;
+    border-right: 2px dashed #cfcfcf;
+    padding: 0 4px 0 16px;
+}
+
+.eventBarTitle {
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    font-weight: bold;
+    font-size: medium;
+    color: black;
+    text-align: left;
+    text-decoration: none;
+}
+
+.eventBarContent {
+    flex: 1;
+    overflow-y: auto;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: column;
+}
