@@ -14,16 +14,6 @@ import "./CommandBar.css";
 import { ColorButton } from '../Buttons';
 import { EventStatus } from '../../models/Event';
 
-export const CommandBarHome = observer(() => {
-    return (
-        <div className="commandBar">
-            <Link to="/Event">
-                <ColorButton className="item" variant="contained">New Event</ColorButton>
-            </Link>
-        </div>
-    );
-});
-
 export interface ICommandBarEvent {
     eventState: EventStatus;
     eventTitle: string;

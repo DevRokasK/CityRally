@@ -1,0 +1,13 @@
+.addCard {
+    margin-bottom: 16px;
+}
+
+:hover.addCard {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    cursor: pointer;
+}
+
+.addCardTitle {
+    font-weight: bold;
+    color: rgb(145, 145, 145);
+}

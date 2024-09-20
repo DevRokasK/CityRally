@@ -1,0 +1,46 @@
+.taskCard {
+    margin-bottom: 16px;
+    display: flex;
+}
+
+:hover.taskCard {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    cursor: pointer;
+}
+
+.taskCardContent {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+    text-align: left;
+    margin-bottom: 6px;
+}
+
+.taskCardText {
+    padding-left: 8px;
+}
+
+.cardContent {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    justify-content: space-between;
+    padding: 8px;
+}
+
+.dragButtonContainer {
+    display: flex;
+    align-items: center;
+    padding-right: 4px;
+    border-right: 1px solid rgba(0, 0, 0, 0.12);
+    cursor: grab;
+}
+
+.dragIcon {
+    height: 100%;
+    color: #666;
+}
+
+.taskContent {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}

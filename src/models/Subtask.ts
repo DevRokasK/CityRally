@@ -4,16 +4,16 @@ import { BaseItem } from "./BaseItem";
 export interface ISubtask {
     id: number;
     title: string;
-    puints: number;
+    points: number;
     isTimed: boolean;
-    startDate: Date;
-    endDate: Date;
+    startDate?: Date;
+    endDate?: Date;
 }
 
 export class Subtask extends BaseItem implements ISubtask {
     @observable public id: number;
     @observable public title: string;
-    @observable public puints: number;
+    @observable public points: number;
     @observable public isTimed: boolean;
     @observable public startDate: Date;
     @observable public endDate: Date;
@@ -23,9 +23,12 @@ export class Subtask extends BaseItem implements ISubtask {
 
         this.id = data.id;
         this.title = data.title;
-        this.puints = data.puints;
+        this.points = data.points;
         this.isTimed = data.isTimed;
-        this.startDate = data.startDate;
-        this.endDate = data.endDate;
+
+        if (this.isTimed) {
+            this.startDate = data.startDate;
+            this.endDate = data.endDate;
+        }
     }
 }

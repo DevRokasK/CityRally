@@ -9,8 +9,8 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 
-import { Event } from "../../models/Event";
 import { Link } from "react-router-dom";
+import { Event } from "../../../models/Event";
 
 export interface IEventCardProps {
     event: Event;
@@ -50,8 +50,9 @@ export const EventCard = observer((props: IEventCardProps) => {
                 pathname: `/Event/${event.id}`,
                 state: { event }
             } as any}
-            style={{ textDecoration: "none" }}>
-            <Box sx={{ minWidth: 440 }} className="eventCard">
+            style={{ textDecoration: "none" }}
+        >
+            <Box sx={{ minWidth: 440, maxWidth: 440 }} className="eventCard">
                 <Card variant="outlined" style={{ backgroundColor: primaryColor, backgroundImage: colors, border: "none" }}>{card}</Card>
             </Box >
         </Link>

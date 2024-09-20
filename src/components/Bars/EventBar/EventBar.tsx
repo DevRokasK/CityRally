@@ -1,8 +1,8 @@
 import { observer } from "mobx-react-lite"
 
 import "./EventBar.css";
-import { EventCard } from "../EventCard/EventCard";
-import { Event } from "../../models/Event";
+import { Event } from "../../../models/Event";
+import { EventCard } from "../../Cards/EventCard/EventCard";
 
 export interface IEventBarProps {
     title: string;

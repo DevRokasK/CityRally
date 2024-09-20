@@ -4,9 +4,9 @@ import { observer } from 'mobx-react-lite';
 
 import "../styles/App.css";
 
-import { CommandBarHome } from '../components/CommandBar/CommandBar';
-import { EventBar } from '../components/EventBar/EventBar';
 import { EventStore } from '../stores/EventStore';
+import { CommandBarHome } from '../components/CommandBar/CommandBarHome';
+import { EventBar } from '../components/Bars/EventBar/EventBar';
 
 export interface IHomeProps {
     eventStore: EventStore;
