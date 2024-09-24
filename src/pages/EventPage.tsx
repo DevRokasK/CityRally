@@ -7,12 +7,9 @@ import "../styles/App.css";
 import { CommandBarEvent } from '../components/CommandBar/CommandBarEvent';
 import { EventStore } from '../stores/EventStore';
 import { useParams } from 'react-router-dom';
-import { AddCard } from '../components/Cards/AddCard/AddCard';
-import { TaskCard } from '../components/Cards/TaskCard/TaskCard';
-import { Task } from '../models/Task';
-import { Subtask } from '../models/Subtask';
-import { GuideCard } from '../components/Cards/GuideCard/GuideCard';
-import { Guide } from '../models/Guide';
+import { TaskBar } from '../components/Bars/TaskBar/TaskBar';
+import { GuideBar } from '../components/Bars/GuideBar/GuideBar';
+import { EventStatus } from '../models/Event';
 
 export interface IEventProps {
     eventStore: EventStore;
@@ -23,49 +20,27 @@ export const EventPage = observer((props: IEventProps) => {
     const { id } = useParams();
 
     const event = eventStore.findEvent(+id);
-    const add = () => {
-
-    };
 
     if (!event) {
         return null;
     }
-    const task = new Task(
-        {
-            id: 0,
-            isMain: true,
-            isEnabled: true,
-            subtasks: [
-                new Subtask(
-                    {
-                        id: 0,
-                        title: "Visai komandai nusifotografuoti pašokus ore",
-                        points: 10,
-                        isTimed: false
-                    }),
-                new Subtask(
-                    {
-                        id: 1,
-                        title: "Visai komandai nusifotografuoti pašokus oreaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-                        points: 5,
-                        isTimed: false
-                    })
-            ]
-        });
-    const guide = new Guide({
-        id: 0,
-        name: "Vardenis",
-        email: "vadenis@email.com"
-    });
-    const { state, title } = event;
+
+    event.loadData();
+    const { state, title, tasks, teams } = event;
+    const [mainTasks, additionalTasks] = tasks.sortTasks();
+    const showButtons = event.state === EventStatus.Closed ? false : true;
+
+    const add = () => {
+
+    };
 
     return (
         <div>
             <CommandBarEvent eventState={state} eventTitle={title} />
-            <div>
-                <AddCard title="Add main task" addFunction={add} />
-                <TaskCard task={task} />
-                <GuideCard guide={guide} />
+            <div className="events">
+                <TaskBar title="Main tasks" addButtonText="Add main task" tasks={mainTasks} showButtons={showButtons} />
+                <TaskBar title="Additional tasks" addButtonText="Add additional task" tasks={additionalTasks} showButtons={showButtons} />
+                <GuideBar title="Guides" addButtonText="Add guides" teamStore={teams} showButtons={showButtons} />
             </div>
         </div >
     );

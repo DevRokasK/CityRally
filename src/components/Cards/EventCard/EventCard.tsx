@@ -18,7 +18,8 @@ export interface IEventCardProps {
 
 export const EventCard = observer((props: IEventCardProps) => {
     const { event } = props;
-    const { title, startDate, endDate, guides, primaryColor, secondaryColor } = event;
+    const { title, startDate, endDate, primaryColor, secondaryColor } = event;
+    const teams = event.teams.teams.length;
 
     var colors = `linear-gradient(to right, ${primaryColor}, ${primaryColor})`;
     if (secondaryColor) {
@@ -36,7 +37,7 @@ export const EventCard = observer((props: IEventCardProps) => {
                     <br />
                     Start time: {startDate.getHours()}:{startDate.getMinutes()}
                     <br />
-                    Guides: {guides}
+                    Teams: {teams}
                     <br />
                     End time: {endDate.getHours()}:{endDate.getMinutes()}
                 </Typography>

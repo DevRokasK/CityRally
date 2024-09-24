@@ -10,14 +10,16 @@ import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 
 import { Guide } from "../../../models/Guide";
+import { GuideStatusTag } from "../../Helpers/GuideStatusTag";
 
 export interface IGuideCardProps {
     guide: Guide;
+    teamName: string;
 };
 
 export const GuideCard = observer((props: IGuideCardProps) => {
-    const { guide } = props;
-    const { name, email } = guide;
+    const { guide, teamName } = props;
+    const { name, email, status } = guide;
 
     const card = (
         <React.Fragment>
@@ -27,11 +29,9 @@ export const GuideCard = observer((props: IGuideCardProps) => {
                         {name}
                     </Typography>
                     <Typography variant="body2" component="div" >
-                        Team1
+                        {teamName}
                     </Typography>
-                    <Typography variant="body2" component="div" style={{ fontWeight: "bold" }} >
-                        Invited
-                    </Typography>
+                    <GuideStatusTag guideStatus={status} />
                     <Typography variant="body2" >
                         {email}
                     </Typography>

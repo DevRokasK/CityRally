@@ -11,10 +11,11 @@ import { Task } from "../../../models/Task";
 
 export interface IEventCardProps {
     task: Task;
+    showDrag: boolean;
 };
 
 export const TaskCard = observer((props: IEventCardProps) => {
-    const { task } = props;
+    const { task, showDrag } = props;
     const { subtasks } = task;
 
     const cardContent = subtasks.map((subtask, index) => {
@@ -38,9 +39,11 @@ export const TaskCard = observer((props: IEventCardProps) => {
     const card = (
         <React.Fragment>
             <CardContent style={{ padding: 4 }} className="cardContent">
-                <div className="dragButtonContainer">
-                    <DragHandleIcon className="dragIcon" />
-                </div>
+                {showDrag &&
+                    <div className="dragButtonContainer">
+                        <DragHandleIcon className="dragIcon" />
+                    </div>
+                }
                 <div className="taskContent">
                     {cardContent}
                 </div>

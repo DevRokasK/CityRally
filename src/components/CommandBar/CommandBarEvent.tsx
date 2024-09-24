@@ -11,7 +11,7 @@ import TextField from '@mui/material/TextField';
 
 import "./CommandBar.css";
 
-import { ColorButton } from '../Buttons';
+import { ColorButton } from '../Helpers/Buttons';
 import { EventStatus } from '../../models/Event';
 
 export interface ICommandBarEvent {
@@ -43,7 +43,25 @@ export const CommandBarEvent = observer((props: ICommandBarEvent) => {
             );
             break;
         }
-        case EventStatus.Current: {
+        case EventStatus.Created: {
+            eventCommandProps = (
+                <React.Fragment>
+                    <TextField id="standard-basic" variant="standard" className='eventTitleEdit' defaultValue={eventTitle} />
+                    <div className="eventEdit">
+                        <EditIcon className="iconColor" />
+                        <Typography variant="body2" className="eventSettings">
+                            Edit settings
+                        </Typography>
+                    </div>
+                    <div className="eventSave">
+                        <ColorButton className="item" variant="contained">Save as draft</ColorButton>
+                        <ColorButton className="item" variant="contained">Save</ColorButton>
+                    </div>
+                </React.Fragment>
+            );
+            break;
+        }
+        case EventStatus.Started: {
             eventCommandProps = (
                 <React.Fragment>
                     <TextField id="standard-basic" variant="standard" className='eventTitleEdit' defaultValue={eventTitle} />
@@ -85,6 +103,9 @@ export const CommandBarEvent = observer((props: ICommandBarEvent) => {
                     <Typography variant="h5" component="div" className="eventTitle">
                         {eventTitle}
                     </Typography>
+                    <div className="eventSave">
+                        <ColorButton className="item" variant="contained">Create as draft</ColorButton>
+                    </div>
                 </React.Fragment>
             );
             break;

@@ -1,7 +1,15 @@
 import { action, observable } from "mobx";
 import { BaseItem } from "./BaseItem";
 import { TaskStore } from "../stores/TaskStore";
+import { TeamStore } from "../stores/TeamStore";
 
+export enum EventStatus {
+    New,
+    Draft,
+    Created,
+    Started,
+    Closed
+}
 export interface IEvent {
     id: number;
     title: string;
@@ -12,14 +20,7 @@ export interface IEvent {
     secondaryColor: string;
     state: EventStatus;
     tasks: TaskStore;
-    guides: number;
-}
-
-export enum EventStatus {
-    New,
-    Current,
-    Draft,
-    Closed
+    teams: TeamStore;
 }
 
 export class Event extends BaseItem implements IEvent {
@@ -32,7 +33,7 @@ export class Event extends BaseItem implements IEvent {
     @observable public secondaryColor: string;
     @observable public state: EventStatus;
     @observable public tasks: TaskStore;
-    @observable public guides: number;
+    @observable public teams: TeamStore;
 
     public constructor(data: IEvent) {
         super();
@@ -46,11 +47,17 @@ export class Event extends BaseItem implements IEvent {
         this.secondaryColor = data.secondaryColor;
         this.state = data.state;
         this.tasks = new TaskStore();
-        this.guides = data.guides;
+        this.teams = new TeamStore();
     }
 
     @action
     public getDate() {
         return `${this.startDate.getFullYear()}-${this.startDate.getMonth()}-${this.startDate.getDate()}`;
+    }
+
+    @action
+    public loadData() {
+        this.tasks.getTasks();
+        this.teams.getTeams();
     }
 }

@@ -5,7 +5,7 @@ import { observer } from 'mobx-react-lite';
 
 import "./CommandBar.css";
 
-import { ColorButton } from '../Buttons';
+import { ColorButton } from '../Helpers/Buttons';
 
 export const CommandBarHome = observer(() => {
     return (

@@ -4,6 +4,7 @@ import { RootStore } from "./RootStore";
 import { BaseItem } from "../models/BaseItem";
 import { Event, EventStatus, IEvent } from "../models/Event";
 import { TaskStore } from "./TaskStore";
+import { TeamStore } from "./TeamStore";
 
 export class EventStore extends BaseItem {
     public rootStore: RootStore;
@@ -27,7 +28,8 @@ export class EventStore extends BaseItem {
         this.endLoading();
     }
 
-    @action getEvents(): Event[] {
+    @action
+    private getEvents(): Event[] {
         const mockEvents: IEvent[] = [
             {
                 id: 1,
@@ -39,7 +41,7 @@ export class EventStore extends BaseItem {
                 secondaryColor: "#D59330",
                 state: EventStatus.Draft,
                 tasks: new TaskStore(),
-                guides: 3
+                teams: new TeamStore()
             },
             {
                 id: 2,
@@ -49,9 +51,9 @@ export class EventStore extends BaseItem {
                 endDate: new Date("2023-08-27T17:30"),
                 primaryColor: "#A78BE3",
                 secondaryColor: "#D59330",
-                state: EventStatus.Current,
+                state: EventStatus.Created,
                 tasks: new TaskStore(),
-                guides: 2
+                teams: new TeamStore()
             },
             {
                 id: 3,
@@ -63,7 +65,7 @@ export class EventStore extends BaseItem {
                 secondaryColor: "#6279B8",
                 state: EventStatus.Closed,
                 tasks: new TaskStore(),
-                guides: 4
+                teams: new TeamStore()
             },
             {
                 id: 4,
@@ -75,7 +77,7 @@ export class EventStore extends BaseItem {
                 secondaryColor: "#FF5733",
                 state: EventStatus.Closed,
                 tasks: new TaskStore(),
-                guides: 5
+                teams: new TeamStore()
             },
             {
                 id: 5,
@@ -87,7 +89,7 @@ export class EventStore extends BaseItem {
                 secondaryColor: "#FF5733",
                 state: EventStatus.Closed,
                 tasks: new TaskStore(),
-                guides: 2
+                teams: new TeamStore()
             },
             {
                 id: 6,
@@ -99,7 +101,7 @@ export class EventStore extends BaseItem {
                 secondaryColor: "#FF5733",
                 state: EventStatus.Draft,
                 tasks: new TaskStore(),
-                guides: 3
+                teams: new TeamStore()
             },
             {
                 id: 7,
@@ -111,7 +113,7 @@ export class EventStore extends BaseItem {
                 secondaryColor: "#FF5733",
                 state: EventStatus.Closed,
                 tasks: new TaskStore(),
-                guides: 6
+                teams: new TeamStore()
             },
             {
                 id: 8,
@@ -123,7 +125,7 @@ export class EventStore extends BaseItem {
                 secondaryColor: "#FF5733",
                 state: EventStatus.Draft,
                 tasks: new TaskStore(),
-                guides: 2
+                teams: new TeamStore()
             },
             {
                 id: 9,
@@ -135,7 +137,7 @@ export class EventStore extends BaseItem {
                 secondaryColor: "#FFD700",
                 state: EventStatus.Closed,
                 tasks: new TaskStore(),
-                guides: 5
+                teams: new TeamStore()
             },
             {
                 id: 10,
@@ -147,11 +149,10 @@ export class EventStore extends BaseItem {
                 secondaryColor: "#FFD700",
                 state: EventStatus.Closed,
                 tasks: new TaskStore(),
-                guides: 5
+                teams: new TeamStore()
             }
         ];
 
-        // Convert mock IEvent data into Event instances
         return mockEvents.map(eventData => new Event(eventData));
     }
 
@@ -168,7 +169,7 @@ export class EventStore extends BaseItem {
 
         this.events.forEach(event => {
             switch (event.state) {
-                case EventStatus.Current: {
+                case (EventStatus.Created || EventStatus.Started): {
                     currentEvents.push(event);
                     break;
                 }
