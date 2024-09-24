@@ -10,7 +10,7 @@ import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 
 import { Link } from "react-router-dom";
-import { Event, EventStatus } from "../../../models/Event";
+import { Event } from "../../../models/Event";
 
 export interface IEventCardProps {
     event: Event;
