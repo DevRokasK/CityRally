@@ -1,6 +1,7 @@
 import * as React from 'react';
+import { useEffect, useState } from 'react';
 
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
 
 import IconButton from '@mui/material/IconButton';
@@ -13,14 +14,47 @@ import "./CommandBar.css";
 
 import { ColorButton } from '../Helpers/Buttons';
 import { EventStatus } from '../../models/Event';
+import { EventStore } from '../../stores/EventStore';
 
 export interface ICommandBarEvent {
     eventState: EventStatus;
     eventTitle: string;
+    eventStore: EventStore;
 }
 
 export const CommandBarEvent = observer((props: ICommandBarEvent) => {
-    const { eventState, eventTitle } = props;
+    const { eventState, eventTitle: initialEventTitle, eventStore } = props;
+
+    const [eventTitle, setEventTitle] = useState(initialEventTitle);
+    const navigate = useNavigate();
+
+    const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const newTitle = event.target.value;
+        setEventTitle(newTitle);
+        if (eventStore.selectedEvent) {
+            eventStore.selectedEvent.setTitle(newTitle);
+        }
+    };
+
+    const handleCreate = () => {
+        eventStore.createEvent();
+        navigate('/');
+    };
+
+    const handleSave = () => {
+        eventStore.saveEvent();
+        navigate('/');
+    };
+
+    const handleSaveAsDraft = () => {
+        eventStore.saveAsDraftEvent();
+        navigate('/');
+    };
+
+    const handleDelete = () => {
+        eventStore.deleteEvent();
+        navigate('/');
+    };
 
     let eventCommandProps = null;
 
@@ -28,7 +62,13 @@ export const CommandBarEvent = observer((props: ICommandBarEvent) => {
         case EventStatus.New: {
             eventCommandProps = (
                 <React.Fragment>
-                    <TextField id="standard-basic" variant="standard" className='eventTitleEdit' defaultValue={eventTitle} />
+                    <TextField
+                        id="standard-basic"
+                        variant="standard"
+                        className='eventTitleEdit'
+                        defaultValue={eventTitle}
+                        onChange={handleTitleChange}
+                    />
                     <div className="eventEdit">
                         <EditIcon className="iconColor" />
                         <Typography variant="body2" className="eventSettings">
@@ -36,8 +76,8 @@ export const CommandBarEvent = observer((props: ICommandBarEvent) => {
                         </Typography>
                     </div>
                     <div className="eventSave">
-                        <ColorButton className="item" variant="contained">Save as draft</ColorButton>
-                        <ColorButton className="item" variant="contained">Create</ColorButton>
+                        <ColorButton className="item" variant="contained" onClick={handleSaveAsDraft}>Save as draft</ColorButton>
+                        <ColorButton className="item" variant="contained" onClick={handleCreate}>Create</ColorButton>
                     </div>
                 </React.Fragment>
             );
@@ -46,7 +86,13 @@ export const CommandBarEvent = observer((props: ICommandBarEvent) => {
         case EventStatus.Created: {
             eventCommandProps = (
                 <React.Fragment>
-                    <TextField id="standard-basic" variant="standard" className='eventTitleEdit' defaultValue={eventTitle} />
+                    <TextField
+                        id="standard-basic"
+                        variant="standard"
+                        className='eventTitleEdit'
+                        defaultValue={eventTitle}
+                        onChange={handleTitleChange}
+                    />
                     <div className="eventEdit">
                         <EditIcon className="iconColor" />
                         <Typography variant="body2" className="eventSettings">
@@ -54,8 +100,8 @@ export const CommandBarEvent = observer((props: ICommandBarEvent) => {
                         </Typography>
                     </div>
                     <div className="eventSave">
-                        <ColorButton className="item" variant="contained">Save as draft</ColorButton>
-                        <ColorButton className="item" variant="contained">Save</ColorButton>
+                        <ColorButton className="item" variant="contained" onClick={handleSaveAsDraft}>Save as draft</ColorButton>
+                        <ColorButton className="item" variant="contained" onClick={handleSave}>Save</ColorButton>
                     </div>
                 </React.Fragment>
             );
@@ -64,7 +110,13 @@ export const CommandBarEvent = observer((props: ICommandBarEvent) => {
         case EventStatus.Started: {
             eventCommandProps = (
                 <React.Fragment>
-                    <TextField id="standard-basic" variant="standard" className='eventTitleEdit' defaultValue={eventTitle} />
+                    <TextField
+                        id="standard-basic"
+                        variant="standard"
+                        className='eventTitleEdit'
+                        defaultValue={eventTitle}
+                        onChange={handleTitleChange}
+                    />
                     <div className="eventEdit">
                         <EditIcon className="iconColor" />
                         <Typography variant="body2" className="eventSettings">
@@ -72,7 +124,7 @@ export const CommandBarEvent = observer((props: ICommandBarEvent) => {
                         </Typography>
                     </div>
                     <div className="eventSave">
-                        <ColorButton className="item" variant="contained">Save</ColorButton>
+                        <ColorButton className="item" variant="contained" onClick={handleSave}>Save</ColorButton>
                     </div>
                 </React.Fragment>
             );
@@ -81,7 +133,13 @@ export const CommandBarEvent = observer((props: ICommandBarEvent) => {
         case EventStatus.Draft: {
             eventCommandProps = (
                 <React.Fragment>
-                    <TextField id="standard-basic" variant="standard" className='eventTitleEdit' defaultValue={eventTitle} />
+                    <TextField
+                        id="standard-basic"
+                        variant="standard"
+                        className='eventTitleEdit'
+                        defaultValue={eventTitle}
+                        onChange={handleTitleChange}
+                    />
                     <div className="eventEdit">
                         <EditIcon className="iconColor" />
                         <Typography variant="body2" className="eventSettings">
@@ -89,9 +147,9 @@ export const CommandBarEvent = observer((props: ICommandBarEvent) => {
                         </Typography>
                     </div>
                     <div className="eventSave">
-                        <ColorButton className="item" variant="contained">Delete</ColorButton>
-                        <ColorButton className="item" variant="contained">Save as draft</ColorButton>
-                        <ColorButton className="item" variant="contained">Create</ColorButton>
+                        <ColorButton className="item" variant="contained" onClick={handleDelete}>Delete</ColorButton>
+                        <ColorButton className="item" variant="contained" onClick={handleSaveAsDraft}>Save as draft</ColorButton>
+                        <ColorButton className="item" variant="contained" onClick={handleCreate}>Create</ColorButton>
                     </div>
                 </React.Fragment>
             );
@@ -104,7 +162,7 @@ export const CommandBarEvent = observer((props: ICommandBarEvent) => {
                         {eventTitle}
                     </Typography>
                     <div className="eventSave">
-                        <ColorButton className="item" variant="contained">Create as draft</ColorButton>
+                        <ColorButton className="item" variant="contained" onClick={handleSaveAsDraft}>Create as draft</ColorButton>
                     </div>
                 </React.Fragment>
             );

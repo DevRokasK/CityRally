@@ -23,4 +23,13 @@ export class Task extends BaseItem implements ITask {
         this.isEnabled = data.isEnabled;
         this.subtasks = data.subtasks;
     }
+
+    public deepClone(): Task {
+        return new Task({
+            id: this.id,
+            isMain: this.isMain,
+            isEnabled: this.isEnabled,
+            subtasks: this.subtasks.map(subtask => subtask.deepClone())
+        });
+    }
 }

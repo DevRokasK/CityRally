@@ -11,12 +11,15 @@ export class EventStore extends BaseItem {
 
     @observable public events: Event[];
 
+    @observable public selectedEvent: Event;
+
     public constructor(rootStore: RootStore) {
         super();
         makeObservable(this);
 
         this.rootStore = rootStore;
         this.events = [];
+        this.selectedEvent = null;
 
         this.init();
     }
@@ -24,12 +27,12 @@ export class EventStore extends BaseItem {
     @action
     private init() {
         this.startLoading();
-        this.events = this.getEvents();
+        this.getEvents();
         this.endLoading();
     }
 
     @action
-    private getEvents(): Event[] {
+    private getEvents(): void {
         const mockEvents: IEvent[] = [
             {
                 id: 1,
@@ -39,7 +42,7 @@ export class EventStore extends BaseItem {
                 endDate: new Date("2025-08-27T17:30"),
                 primaryColor: "#A78BE3",
                 secondaryColor: "#D59330",
-                state: EventStatus.Draft,
+                state: EventStatus.Created,
                 tasks: new TaskStore(),
                 teams: new TeamStore()
             },
@@ -48,7 +51,7 @@ export class EventStore extends BaseItem {
                 title: "Orientacinės varžybos \"City Rally'24\"",
                 description: "This is the second event",
                 startDate: new Date("2024-08-27T12:30"),
-                endDate: new Date("2023-08-27T17:30"),
+                endDate: new Date("2024-12-27T17:30"),
                 primaryColor: "#A78BE3",
                 secondaryColor: "#D59330",
                 state: EventStatus.Created,
@@ -153,12 +156,27 @@ export class EventStore extends BaseItem {
             }
         ];
 
-        return mockEvents.map(eventData => new Event(eventData));
+        this.events = mockEvents.map(eventData => new Event(eventData));
+        this.checkForActiveEvents();
     }
 
     @action
-    public findEvent(id: number): Event | undefined {
-        return this.events.find(event => event.id === id);
+    private checkForActiveEvents() {
+        const now = Date.now();
+        this.events.forEach(event => {
+            const startDate = event.startDate.getTime();
+            const endDate = event.endDate.getTime();
+
+            if (startDate < now && endDate > now) {
+                if (event.state !== EventStatus.Started) {
+                    event.state = EventStatus.Started;
+                }
+            } else if (endDate < now) {
+                if (event.state !== EventStatus.Closed) {
+                    event.state = EventStatus.Closed;
+                }
+            }
+        });
     }
 
     @action
@@ -169,7 +187,8 @@ export class EventStore extends BaseItem {
 
         this.events.forEach(event => {
             switch (event.state) {
-                case (EventStatus.Created || EventStatus.Started): {
+                case EventStatus.Created:
+                case EventStatus.Started: {
                     currentEvents.push(event);
                     break;
                 }
@@ -185,5 +204,84 @@ export class EventStore extends BaseItem {
         });
 
         return [currentEvents, draftEvents, pastEvents];
+    }
+
+    @action
+    public selectEvent(id: string): Event {
+        if (id === "new") {
+            this.selectedEvent = new Event({
+                id: +id,
+                title: "",
+                description: "",
+                startDate: null,
+                endDate: null,
+                primaryColor: null,
+                secondaryColor: null,
+                state: EventStatus.New
+            });
+
+            return this.selectedEvent;
+        }
+
+        const existingEventIndex = this.events.findIndex(event => event.id === +id);
+
+        if (existingEventIndex < 0) {
+            return null;
+        }
+
+        const event = this.events[existingEventIndex];
+        event.loadData();
+        this.selectedEvent = event.deepClone();
+
+        return this.selectedEvent;
+    }
+
+    @action
+    public createEvent(): void {
+        if (!this.selectedEvent) {
+            return;
+        }
+
+        const currentTime = Date.now();
+        const startDate = this.selectedEvent.startDate.getTime()
+
+        if (startDate < currentTime) {
+            return;
+        }
+
+        this.selectedEvent.state = EventStatus.Created;
+        this.saveEvent();
+    }
+
+    @action
+    public saveEvent(): void {
+        const existingEventIndex = this.events.findIndex(event => event.id === this.selectedEvent.id);
+        if (this.selectedEvent.state === EventStatus.New) {
+            this.selectedEvent.state = EventStatus.Created;
+        }
+
+        if (existingEventIndex > -1) {
+            this.events[existingEventIndex] = this.selectedEvent.deepClone();
+        } else {
+            this.events.push(this.selectedEvent.deepClone());
+        }
+    }
+
+    @action
+    public saveAsDraftEvent(): void {
+        if (this.selectedEvent) {
+            if (this.selectedEvent.state === EventStatus.Closed) {
+                this.selectedEvent.id = this.events[this.events.length - 1].id++;
+            }
+
+            this.selectedEvent.state = EventStatus.Draft;
+            this.saveEvent();
+        }
+    }
+
+    @action
+    public deleteEvent(): void {
+        this.events = this.events.filter(event => event.id !== this.selectedEvent.id);
+        this.selectedEvent = null;
     }
 }

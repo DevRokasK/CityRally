@@ -16,10 +16,6 @@ export const GuideBar = observer((props: IGuideBarProps) => {
     const { title, addButtonText, teamStore, showButtons } = props;
     const { teams } = teamStore;
 
-    if (teams.length === 0) {
-        return null;
-    }
-
     const guideCards = teams.map((team) =>
         team.guides.map((guide) => (
             <GuideCard key={guide.id} guide={guide} teamName={team.title} />

@@ -1,4 +1,4 @@
-import { observable } from "mobx";
+import { action, observable } from "mobx";
 import { BaseItem } from "./BaseItem";
 
 export interface ISubtask {
@@ -30,5 +30,15 @@ export class Subtask extends BaseItem implements ISubtask {
             this.startDate = data.startDate;
             this.endDate = data.endDate;
         }
+    }
+
+    @action
+    public deepClone(): Subtask {
+        return new Subtask({
+            id: this.id,
+            title: this.title,
+            points: this.points,
+            isTimed: this.isTimed
+        });
     }
 }

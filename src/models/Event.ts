@@ -19,8 +19,8 @@ export interface IEvent {
     primaryColor: string;
     secondaryColor: string;
     state: EventStatus;
-    tasks: TaskStore;
-    teams: TeamStore;
+    tasks?: TaskStore;
+    teams?: TeamStore;
 }
 
 export class Event extends BaseItem implements IEvent {
@@ -46,8 +46,22 @@ export class Event extends BaseItem implements IEvent {
         this.primaryColor = data.primaryColor;
         this.secondaryColor = data.secondaryColor;
         this.state = data.state;
-        this.tasks = new TaskStore();
-        this.teams = new TeamStore();
+
+        if (data.tasks) {
+            this.tasks = data.tasks;
+        } else {
+            this.tasks = new TaskStore();
+        }
+
+        if (data.teams) {
+            this.teams = data.teams;
+        } else {
+            this.teams = new TeamStore();
+        }
+
+        if (this.state !== EventStatus.New) {
+            this.teams.getTeams();
+        }
     }
 
     @action
@@ -58,6 +72,50 @@ export class Event extends BaseItem implements IEvent {
     @action
     public loadData() {
         this.tasks.getTasks();
-        this.teams.getTeams();
+    }
+
+    @action
+    public deepClone(): Event {
+        const tasks = this.tasks.deepClone();
+        const teams = this.teams.deepClone();
+
+        return new Event({
+            id: this.id,
+            title: this.title,
+            description: this.description,
+            startDate: new Date(this.startDate),
+            endDate: new Date(this.endDate),
+            primaryColor: this.primaryColor,
+            secondaryColor: this.secondaryColor,
+            state: this.state,
+            tasks: tasks,
+            teams: teams
+        });
+    }
+
+    @action
+    public getStateString(): string {
+        switch (this.state) {
+            case EventStatus.New: {
+                return "New";
+            }
+            case EventStatus.Draft: {
+                return "Draft";
+            }
+            case EventStatus.Created: {
+                return "Scheduled";
+            }
+            case EventStatus.Started: {
+                return "Ongoing";
+            }
+            case EventStatus.Closed: {
+                return "Closed";
+            }
+        }
+    }
+
+    @action
+    public setTitle(newTitle: string) {
+        this.title = newTitle;
     }
 }

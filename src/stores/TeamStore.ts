@@ -37,4 +37,11 @@ export class TeamStore extends BaseItem {
         return this.teams;
 
     }
+
+    @action
+    public deepClone(): TeamStore {
+        const clone = new TeamStore();
+        clone.teams = this.teams.map(team => team.deepClone());
+        return clone;
+    }
 }

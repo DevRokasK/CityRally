@@ -10,7 +10,7 @@ import { ColorButton } from '../Helpers/Buttons';
 export const CommandBarHome = observer(() => {
     return (
         <div className="commandBar">
-            <Link to="/Event">
+            <Link to="/Event/new">
                 <ColorButton className="item" variant="contained">New Event</ColorButton>
             </Link>
         </div>

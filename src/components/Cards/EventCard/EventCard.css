@@ -18,3 +18,8 @@
     column-count: 2;
     column-gap: 32px;
 }
+
+.cartStatus {
+    font-weight: bold;
+    color: white;
+}

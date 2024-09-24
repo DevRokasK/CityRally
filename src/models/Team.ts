@@ -53,4 +53,12 @@ export class Team extends BaseItem implements ITeam {
 
         this.guides.push(guide1, guide2, guide3);
     }
+
+    @action
+    public deepClone(): Team {
+        return new Team({
+            id: this.id,
+            title: this.title
+        });
+    }
 }

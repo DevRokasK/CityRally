@@ -15,10 +15,6 @@ export interface ITaskBarProps {
 export const TaskBar = observer((props: ITaskBarProps) => {
     const { title, addButtonText, tasks, showButtons } = props;
 
-    if (tasks.length === 0) {
-        return null;
-    }
-
     const taskCards = tasks.map(task => {
         return <TaskCard key={task.id} task={task} showDrag={showButtons} />;
     });
