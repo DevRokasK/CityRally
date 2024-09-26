@@ -1,9 +1,14 @@
+import * as React from 'react';
+import { useState } from 'react';
+
 import { observer } from "mobx-react-lite"
 
 import "./TaskBar.css";
+
 import { Task } from "../../../models/Task";
 import { TaskCard } from "../../Cards/TaskCard/TaskCard";
 import { AddCard } from "../../Cards/AddCard/AddCard";
+import { TaskModal } from '../../Modals/TaskModal';
 
 export interface ITaskBarProps {
     title: string;
@@ -15,19 +20,34 @@ export interface ITaskBarProps {
 export const TaskBar = observer((props: ITaskBarProps) => {
     const { title, addButtonText, tasks, showButtons } = props;
 
+    const [isModalOpen, setModalOpen] = useState(false);
+    const handleOpen = () => setModalOpen(true);
+    const handleClose = () => setModalOpen(false);
+
     const taskCards = tasks.map(task => {
-        return <TaskCard key={task.id} task={task} showDrag={showButtons} />;
+        return (
+            <div onClick={handleOpen}>
+                <TaskCard key={task.id} task={task} showDrag={showButtons} />
+            </div>
+        )
     });
 
     return (
-        <div className="taskBar">
-            <p className="taskBarTitle">{title}</p>
-            <div className="taskBarContent">
-                {showButtons &&
-                    <AddCard title={addButtonText} addFunction={() => { }} />
-                }
-                {taskCards}
+        <React.Fragment>
+            <div className="taskBar">
+                <p className="taskBarTitle">{title}</p>
+                <div className="taskBarContent">
+                    {showButtons &&
+                        <div onClick={handleOpen}>
+                            <AddCard title={addButtonText} />
+                        </div>
+                    }
+                    {taskCards}
+                </div>
             </div>
-        </div>
+            {isModalOpen &&
+                <TaskModal isOpen={isModalOpen} onClose={handleClose} />
+            }
+        </React.Fragment>
     );
 });

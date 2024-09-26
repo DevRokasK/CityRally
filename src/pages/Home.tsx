@@ -21,9 +21,9 @@ export const Home = observer((props: IHomeProps) => {
         <div>
             <CommandBarHome />
             <div className="events">
-                <EventBar title={"Current events"} events={currentEvents} />
-                <EventBar title={"Draft events"} events={draftEvents} />
-                <EventBar title={"Past events"} events={pastEvents} />
+                <EventBar title={"Current events"} events={currentEvents} isBorderless={false} />
+                <EventBar title={"Draft events"} events={draftEvents} isBorderless={false} />
+                <EventBar title={"Past events"} events={pastEvents} isBorderless={true} />
             </div>
         </div>
     );

@@ -9,6 +9,16 @@
     padding: 0 4px 0 16px;
 }
 
+.eventBarBorderless {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    justify-content: left;
+    height: 100%;
+    overflow: hidden;
+    padding: 0 4px 0 16px;
+}
+
 .eventBarTitle {
     font-family: "Roboto", "Helvetica", "Arial", sans-serif;
     font-weight: bold;

@@ -48,7 +48,7 @@ export class Team extends BaseItem implements ITeam {
             id: 0,
             name: "Gigachadius",
             email: "Gigachadius@email.com",
-            status: GuideStatus.Declined
+            status: GuideStatus.Invited
         });
 
         this.guides.push(guide1, guide2, guide3);

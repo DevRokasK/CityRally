@@ -2,9 +2,8 @@ import { observable } from "mobx";
 import { BaseItem } from "./BaseItem";
 
 export enum GuideStatus {
-    Invited = "Invited",
-    Accepted = "Accepted",
-    Declined = "Declined"
+    Invited,
+    Accepted
 }
 
 export interface IGuide {

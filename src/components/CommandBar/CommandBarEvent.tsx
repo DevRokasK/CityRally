@@ -15,6 +15,7 @@ import "./CommandBar.css";
 import { ColorButton } from '../Helpers/Buttons';
 import { EventStatus } from '../../models/Event';
 import { EventStore } from '../../stores/EventStore';
+import { EventSettingsModal } from '../Modals/EventSettingsModal';
 
 export interface ICommandBarEvent {
     eventState: EventStatus;
@@ -24,6 +25,10 @@ export interface ICommandBarEvent {
 
 export const CommandBarEvent = observer((props: ICommandBarEvent) => {
     const { eventState, eventTitle: initialEventTitle, eventStore } = props;
+
+    const [isModalOpen, setModalOpen] = useState(false);
+    const handleOpen = () => setModalOpen(true);
+    const handleClose = () => setModalOpen(false);
 
     const [eventTitle, setEventTitle] = useState(initialEventTitle);
     const navigate = useNavigate();
@@ -69,7 +74,7 @@ export const CommandBarEvent = observer((props: ICommandBarEvent) => {
                         defaultValue={eventTitle}
                         onChange={handleTitleChange}
                     />
-                    <div className="eventEdit">
+                    <div className="eventEdit" onClick={handleOpen}>
                         <EditIcon className="iconColor" />
                         <Typography variant="body2" className="eventSettings">
                             Edit settings
@@ -93,7 +98,7 @@ export const CommandBarEvent = observer((props: ICommandBarEvent) => {
                         defaultValue={eventTitle}
                         onChange={handleTitleChange}
                     />
-                    <div className="eventEdit">
+                    <div className="eventEdit" onClick={handleOpen}>
                         <EditIcon className="iconColor" />
                         <Typography variant="body2" className="eventSettings">
                             Edit settings
@@ -117,7 +122,7 @@ export const CommandBarEvent = observer((props: ICommandBarEvent) => {
                         defaultValue={eventTitle}
                         onChange={handleTitleChange}
                     />
-                    <div className="eventEdit">
+                    <div className="eventEdit" onClick={handleOpen}>
                         <EditIcon className="iconColor" />
                         <Typography variant="body2" className="eventSettings">
                             Edit settings
@@ -140,7 +145,7 @@ export const CommandBarEvent = observer((props: ICommandBarEvent) => {
                         defaultValue={eventTitle}
                         onChange={handleTitleChange}
                     />
-                    <div className="eventEdit">
+                    <div className="eventEdit" onClick={handleOpen}>
                         <EditIcon className="iconColor" />
                         <Typography variant="body2" className="eventSettings">
                             Edit settings
@@ -171,13 +176,18 @@ export const CommandBarEvent = observer((props: ICommandBarEvent) => {
     }
 
     return (
-        <div className="commandBar">
-            <Link to="/">
-                <IconButton aria-label="back">
-                    <BackIcon className="iconColor" />
-                </IconButton>
-            </Link>
-            {eventCommandProps}
-        </div>
+        <React.Fragment>
+            <div className="commandBar">
+                <Link to="/">
+                    <IconButton aria-label="back">
+                        <BackIcon className="iconColor" />
+                    </IconButton>
+                </Link>
+                {eventCommandProps}
+            </div>
+            {isModalOpen &&
+                <EventSettingsModal isOpen={isModalOpen} onClose={handleClose} />
+            }
+        </React.Fragment>
     );
 });

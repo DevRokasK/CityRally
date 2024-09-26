@@ -5,7 +5,7 @@
     justify-content: left;
     height: 100%;
     overflow: hidden;
-    border-right: 2px dashed #cfcfcf;
+    /* border-right: 2px dashed #cfcfcf; */
     padding: 0 4px 0 16px;
 }
 
@@ -26,4 +26,9 @@
     align-items: center;
     justify-content: flex-start;
     flex-direction: column;
+}
+
+.teamSeperator {
+    border-bottom: 1px dashed #cfcfcf;
+    margin-bottom: 12px;
 }

@@ -1,4 +1,4 @@
-.invitedTag {
+.Invited {
     font-family: "Roboto", "Helvetica", "Arial", sans-serif;
     font-weight: bold;
     text-align: center;
@@ -7,20 +7,11 @@
     border-radius: 30px;
 }
 
-.acceptedTag {
+.Accpeted {
     font-family: "Roboto", "Helvetica", "Arial", sans-serif;
     font-weight: bold;
     text-align: center;
     color: #0dce2d;
     border: 1px solid #0dce2d;
-    border-radius: 30px;
-}
-
-.declinedTag {
-    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
-    font-weight: bold;
-    text-align: center;
-    color: red;
-    border: 1px solid Red;
     border-radius: 30px;
 }

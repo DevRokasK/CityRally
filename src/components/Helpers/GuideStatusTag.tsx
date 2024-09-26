@@ -15,20 +15,16 @@ export const GuideStatusTag = observer((props: GuideStatusTagProps) => {
 
     switch (guideStatus) {
         case GuideStatus.Invited: {
-            tagStyles = "invitedTag";
+            tagStyles = "Invited";
             break;
         }
         case GuideStatus.Accepted: {
-            tagStyles = "acceptedTag";
-            break;
-        }
-        case GuideStatus.Declined: {
-            tagStyles = "declinedTag";
+            tagStyles = "Accpeted";
             break;
         }
     }
 
     return (
-        <div className={tagStyles}>{guideStatus}</div>
+        <div className={tagStyles}>{tagStyles}</div>
     );
 });

@@ -11,19 +11,14 @@ import Typography from '@mui/material/Typography';
 
 export interface IAddCardProps {
     title: string;
-    addFunction: () => void;
 };
 
 export const AddCard = observer((props: IAddCardProps) => {
-    const { title, addFunction } = props;
-
-    const onAddClick = () => {
-        addFunction();
-    }
+    const { title } = props;
 
     const card = (
         <React.Fragment>
-            <CardContent style={{padding: 4}}>
+            <CardContent style={{ padding: 4 }}>
                 <Typography variant="body2" component="div" className="addCardTitle">
                     {title}
                 </Typography>
@@ -32,10 +27,8 @@ export const AddCard = observer((props: IAddCardProps) => {
     );
 
     return (
-        <div onClick={onAddClick}>
-            <Box sx={{ minWidth: 440, maxWidth: 440 }} className="addCard">
-                <Card variant="outlined" >{card}</Card>
-            </Box >
-        </div>
+        <Box sx={{ minWidth: 440, maxWidth: 440 }} className="addCard">
+            <Card variant="outlined" >{card}</Card>
+        </Box >
     );
 });
