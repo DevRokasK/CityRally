@@ -8,13 +8,15 @@ import CloseIcon from '@mui/icons-material/Close';
 import { TextField } from "@mui/material";
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+
 import dayjs, { Dayjs } from 'dayjs';
 
 import "./Modals.css";
 
 import { Event } from "../../models/Event";
 import { ColorButton, OutlinedButton } from "../Helpers/Buttons";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { HexColorPicker } from "react-colorful";
 
 export interface IEventSettingsModal {
     isOpen: boolean;
@@ -24,15 +26,25 @@ export interface IEventSettingsModal {
 
 export const EventSettingsModal = observer((props: IEventSettingsModal) => {
     const { isOpen, onClose, event } = props;
-    const { title, description, startDate, endDate } = event;
+    const { title, description, startDate, endDate, primaryColor, secondaryColor } = event;
 
     const [startDateValue, setStartDateValue] = useState<Dayjs | null>(dayjs(startDate));
     const [endDateValue, setEndDateValue] = useState<Dayjs | null>(dayjs(endDate));
-
     const [startHour, setStartHour] = useState<string>(startDateValue?.hour().toString() || "00");
     const [startMinute, setStartMinute] = useState<string>(startDateValue?.minute().toString() || "00");
     const [endHour, setEndHour] = useState<string>(endDateValue?.hour().toString() || "00");
     const [endMinute, setEndMinute] = useState<string>(endDateValue?.minute().toString() || "00");
+
+    const [pColor, setPColor] = React.useState(primaryColor);
+    const [sColor, setSColor] = React.useState(secondaryColor);
+
+    const primaryHandleChange = (color: string) => {
+        setPColor(color)
+    }
+
+    const secondaryHandleChange = (color: string) => {
+        setSColor(color)
+    }
 
     const handleStartDateChange = (newValue: Dayjs | null) => {
         setStartDateValue(newValue);
@@ -157,6 +169,10 @@ export const EventSettingsModal = observer((props: IEventSettingsModal) => {
                             </div>
                         </div>
                     </LocalizationProvider>
+                    <div style={{ display: "flex", justifyContent: "space-between", marginTop: "16px" }}>
+                        <HexColorPicker color={pColor} onChange={primaryHandleChange} />
+                        <HexColorPicker color={sColor} onChange={secondaryHandleChange} />
+                    </div>
                     <div className="modalFooterButtons">
                         <ColorButton className="item" variant="contained">Save</ColorButton>
                         <OutlinedButton className="item" variant="outlined" onClick={onClose}>Cancel</OutlinedButton>

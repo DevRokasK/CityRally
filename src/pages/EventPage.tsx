@@ -24,7 +24,7 @@ export const EventPage = observer((props: IEventProps) => {
         return null;
     }
 
-    const { state, title, tasks, teams } = event;
+    const { tasks, teams } = event;
     const [mainTasks, additionalTasks] = tasks.sortTasks();
     const showButtons = event.state === EventStatus.Closed ? false : true;
 
