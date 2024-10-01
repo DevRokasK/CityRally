@@ -1,30 +1,54 @@
-import React from "react";
+import React, { useState } from "react";
 
 import { observer } from "mobx-react-lite";
 
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
+import { TextField } from "@mui/material";
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import dayjs, { Dayjs } from 'dayjs';
 
-const style = {
-    position: 'absolute' as 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 400,
-    bgcolor: 'background.paper',
-    border: '2px solid #000',
-    boxShadow: 24,
-    p: 4,
-};
+import "./Modals.css";
+
+import { Event } from "../../models/Event";
+import { ColorButton, OutlinedButton } from "../Helpers/Buttons";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 
 export interface IEventSettingsModal {
     isOpen: boolean;
     onClose: () => void;
+    event: Event;
 };
 
 export const EventSettingsModal = observer((props: IEventSettingsModal) => {
-    const { isOpen, onClose } = props;
+    const { isOpen, onClose, event } = props;
+    const { title, description, startDate, endDate } = event;
+
+    const [startDateValue, setStartDateValue] = useState<Dayjs | null>(dayjs(startDate));
+    const [endDateValue, setEndDateValue] = useState<Dayjs | null>(dayjs(endDate));
+
+    const [startHour, setStartHour] = useState<string>(startDateValue?.hour().toString() || "00");
+    const [startMinute, setStartMinute] = useState<string>(startDateValue?.minute().toString() || "00");
+    const [endHour, setEndHour] = useState<string>(endDateValue?.hour().toString() || "00");
+    const [endMinute, setEndMinute] = useState<string>(endDateValue?.minute().toString() || "00");
+
+    const handleStartDateChange = (newValue: Dayjs | null) => {
+        setStartDateValue(newValue);
+        if (newValue) {
+            setStartHour(newValue.hour().toString());
+            setStartMinute(newValue.minute().toString());
+        }
+    };
+
+    const handleEndDateChange = (newValue: Dayjs | null) => {
+        setEndDateValue(newValue);
+        if (newValue) {
+            setEndHour(newValue.hour().toString());
+            setEndMinute(newValue.minute().toString());
+        }
+    };
 
     return (
         <Modal
@@ -33,14 +57,112 @@ export const EventSettingsModal = observer((props: IEventSettingsModal) => {
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
         >
-            <Box sx={style}>
-                <Typography id="modal-modal-title" variant="h6" component="h2">
-                    Text in a modal
-                </Typography>
-                <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                    Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-                </Typography>
-            </Box>
+            <div className="editEventSettings">
+                <div className="modalHeader">
+                    <TextField
+                        id="standard-basic"
+                        label="Title"
+                        variant="standard"
+                        className='eventTitleEdit'
+                        defaultValue={title}
+                    />
+                    <IconButton aria-label="close" onClick={onClose}>
+                        <CloseIcon className="iconColor" />
+                    </IconButton>
+                </div>
+                <TextField
+                    sx={{ width: "100%", marginTop: "16px" }}
+                    id="standard-multiline-flexible"
+                    label="Description"
+                    multiline
+                    maxRows={2}
+                    variant="standard"
+                    defaultValue={description}
+                />
+                <div className="editEventSettings">
+                    <div className="modalHeader">
+                        <TextField
+                            id="standard-basic"
+                            label="Title"
+                            variant="standard"
+                            className='eventTitleEdit'
+                            defaultValue={title}
+                        />
+                        <IconButton aria-label="close" onClick={onClose}>
+                            <CloseIcon className="iconColor" />
+                        </IconButton>
+                    </div>
+                    <TextField
+                        sx={{ width: "100%", marginTop: "16px" }}
+                        id="standard-multiline-flexible"
+                        label="Description"
+                        multiline
+                        maxRows={2}
+                        variant="standard"
+                        defaultValue={description}
+                    />
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                        <div style={{ display: "flex", justifyContent: "space-between", marginTop: "16px" }}>
+                            <div style={{ flex: 1, marginRight: "8px" }}>
+                                <DatePicker
+                                    label="Start Date"
+                                    value={startDateValue}
+                                    onChange={handleStartDateChange}
+                                    sx={{ width: "100%" }}
+                                />
+                                <TextField
+                                    label="Start Hour"
+                                    type="number"
+                                    variant="standard"
+                                    value={startHour}
+                                    onChange={(e) => setStartHour(e.target.value)}
+                                    inputProps={{ min: 0, max: 23 }}
+                                    sx={{ marginTop: "8px", width: "100%" }}
+                                />
+                                <TextField
+                                    label="Start Minute"
+                                    type="number"
+                                    variant="standard"
+                                    value={startMinute}
+                                    onChange={(e) => setStartMinute(e.target.value)}
+                                    inputProps={{ min: 0, max: 59 }}
+                                    sx={{ marginTop: "8px", width: "100%" }}
+                                />
+                            </div>
+                            <div style={{ flex: 1, marginLeft: "8px" }}>
+                                <DatePicker
+                                    label="End Date"
+                                    value={endDateValue}
+                                    onChange={handleEndDateChange}
+                                    sx={{ width: "100%" }}
+                                />
+                                <TextField
+                                    label="End Hour"
+                                    type="number"
+                                    variant="standard"
+                                    value={endHour}
+                                    onChange={(e) => setEndHour(e.target.value)}
+                                    inputProps={{ min: 0, max: 23 }}
+                                    sx={{ marginTop: "8px", width: "100%" }}
+                                />
+                                <TextField
+                                    label="End Minute"
+                                    type="number"
+                                    variant="standard"
+                                    value={endMinute}
+                                    onChange={(e) => setEndMinute(e.target.value)}
+                                    inputProps={{ min: 0, max: 59 }}
+                                    sx={{ marginTop: "8px", width: "100%" }}
+                                />
+                            </div>
+                        </div>
+                    </LocalizationProvider>
+                    <div className="modalFooterButtons">
+                        <ColorButton className="item" variant="contained">Save</ColorButton>
+                        <OutlinedButton className="item" variant="outlined" onClick={onClose}>Cancel</OutlinedButton>
+                    </div>
+                </div>
+            </div>
         </Modal>
     );
 });

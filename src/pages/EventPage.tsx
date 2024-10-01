@@ -30,7 +30,7 @@ export const EventPage = observer((props: IEventProps) => {
 
     return (
         <div>
-            <CommandBarEvent eventState={state} eventTitle={title} eventStore={eventStore} />
+            <CommandBarEvent eventStore={eventStore} event={event} />
             <div className="events">
                 <TaskBar title="Main tasks" addButtonText="Add main task" tasks={mainTasks} showButtons={showButtons} />
                 <TaskBar title="Additional tasks" addButtonText="Add additional task" tasks={additionalTasks} showButtons={showButtons} />

@@ -13,18 +13,18 @@ import TextField from '@mui/material/TextField';
 import "./CommandBar.css";
 
 import { ColorButton } from '../Helpers/Buttons';
-import { EventStatus } from '../../models/Event';
+import { Event, EventStatus } from '../../models/Event';
 import { EventStore } from '../../stores/EventStore';
 import { EventSettingsModal } from '../Modals/EventSettingsModal';
 
 export interface ICommandBarEvent {
-    eventState: EventStatus;
-    eventTitle: string;
     eventStore: EventStore;
+    event: Event
 }
 
 export const CommandBarEvent = observer((props: ICommandBarEvent) => {
-    const { eventState, eventTitle: initialEventTitle, eventStore } = props;
+    const { eventStore, event } = props;
+    const { state, title: initialEventTitle, } = event;
 
     const [isModalOpen, setModalOpen] = useState(false);
     const handleOpen = () => setModalOpen(true);
@@ -63,7 +63,7 @@ export const CommandBarEvent = observer((props: ICommandBarEvent) => {
 
     let eventCommandProps = null;
 
-    switch (eventState) {
+    switch (state) {
         case EventStatus.New: {
             eventCommandProps = (
                 <React.Fragment>
@@ -186,7 +186,7 @@ export const CommandBarEvent = observer((props: ICommandBarEvent) => {
                 {eventCommandProps}
             </div>
             {isModalOpen &&
-                <EventSettingsModal isOpen={isModalOpen} onClose={handleClose} />
+                <EventSettingsModal isOpen={isModalOpen} onClose={handleClose} event={event} />
             }
         </React.Fragment>
     );
