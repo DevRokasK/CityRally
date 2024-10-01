@@ -17,9 +17,41 @@
     align-items: center;
 }
 
+.rightSection {
+    display: flex;
+    align-items: center;
+  }
+
 .modalFooterButtons {
     display: flex;
-    justify-content: flex-end;
+    justify-content: flex-start;
     gap: 16px;
     margin-top: 16px;
+}
+
+.colorContainer {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 24px;
+    gap: 32px;
+}
+
+.datepickerContainer {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 8px;
+    margin-bottom: 24px;
+    gap: 32px;
+}
+
+.timeContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 16px;
+    gap: 8px;
+}
+
+.smallTextfield {
+    width: 50%;
 }

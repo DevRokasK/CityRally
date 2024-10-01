@@ -15,3 +15,23 @@
     border: 1px solid #0dce2d;
     border-radius: 30px;
 }
+
+.Draft {
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    font-weight: bold;
+    text-align: center;
+    color: #0d61ce;
+    border: 1px solid #0d61ce;
+    border-radius: 30px;
+    padding: 4px 12px;
+}
+
+.Active {
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    font-weight: bold;
+    text-align: center;
+    color: #0dce2d;
+    border: 1px solid #0dce2d;
+    border-radius: 30px;
+    padding: 4px 12px;
+}

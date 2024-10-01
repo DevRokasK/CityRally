@@ -10,7 +10,7 @@ import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 
 import { Guide } from "../../../models/Guide";
-import { GuideStatusTag } from "../../Helpers/GuideStatusTag";
+import { GuideStatusTag } from "../../Helpers/StatusTag";
 
 export interface IGuideCardProps {
     guide: Guide;
