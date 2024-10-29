@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "5pVcbtVM7qhHibMgo2XCJ9UYIJSz54RfUNmxDvvTFwo=",
+  "Source": "CityRallyApi",
+  "BasePath": "_content/CityRallyApi",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

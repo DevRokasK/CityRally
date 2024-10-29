@@ -1,0 +1,6 @@
+@CityRallyApi_HostAddress = http://localhost:5063
+
+GET {{CityRallyApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
