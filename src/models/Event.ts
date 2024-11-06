@@ -21,6 +21,7 @@ export interface IEvent {
     state: EventStatus;
     tasks?: TaskStore;
     teams?: TeamStore;
+    teamCount?: number;
 }
 
 export class Event extends BaseItem implements IEvent {
@@ -34,6 +35,7 @@ export class Event extends BaseItem implements IEvent {
     @observable public state: EventStatus;
     @observable public tasks: TaskStore;
     @observable public teams: TeamStore;
+    @observable public teamCount: number;
 
     public constructor(data: IEvent) {
         super();
@@ -41,8 +43,8 @@ export class Event extends BaseItem implements IEvent {
         this.id = data.id;
         this.title = data.title;
         this.description = data.description;
-        this.startDate = data.startDate;
-        this.endDate = data.endDate;
+        this.startDate = new Date(data.startDate);
+        this.endDate = new Date(data.endDate);
         this.primaryColor = data.primaryColor;
         this.secondaryColor = data.secondaryColor;
         this.state = data.state;
@@ -62,11 +64,20 @@ export class Event extends BaseItem implements IEvent {
         if (this.state !== EventStatus.New) {
             this.teams.getTeams();
         }
+
+        if (data.teamCount) {
+            this.teamCount = data.teamCount;
+        }
     }
 
     @action
-    public getDate() {
+    public getStartDate() {
         return `${this.startDate.getFullYear()}-${this.startDate.getMonth()}-${this.startDate.getDate()}`;
+    }
+
+    @action
+    public getEndDate() {
+        return `${this.endDate.getFullYear()}-${this.endDate.getMonth()}-${this.endDate.getDate()}`;
     }
 
     @action

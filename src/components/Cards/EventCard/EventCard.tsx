@@ -11,6 +11,7 @@ import Typography from '@mui/material/Typography';
 
 import { Link } from "react-router-dom";
 import { Event } from "../../../models/Event";
+import { dateToStringHnM } from "../../../Helpers";
 
 export interface IEventCardProps {
     event: Event;
@@ -19,14 +20,21 @@ export interface IEventCardProps {
 export const EventCard = observer((props: IEventCardProps) => {
     const { event } = props;
     const { title, startDate, endDate, primaryColor, secondaryColor } = event;
-    const teams = event.teams.teams.length;
+    const teams = event.teamCount ? event.teamCount : event.teams.teams.length;
 
     let statusString: string = event.getStateString();
 
-    var colors = `linear-gradient(to right, ${primaryColor}, ${primaryColor})`;
-    if (secondaryColor) {
-        colors = `linear-gradient(to right, ${primaryColor}, ${secondaryColor})`;
+    var colors = `linear-gradient(to right, #8B1E3F, #3C153B)`;
+
+    if (primaryColor) {
+        colors = `linear-gradient(to right, ${primaryColor}, ${primaryColor})`;
+        if (secondaryColor) {
+            colors = `linear-gradient(to right, ${primaryColor}, ${secondaryColor})`;
+        }
     }
+
+    const startTime = dateToStringHnM(startDate);
+    const endTime = dateToStringHnM(endDate);
 
     const card = (
         <React.Fragment>
@@ -35,15 +43,17 @@ export const EventCard = observer((props: IEventCardProps) => {
                     {title}
                 </Typography>
                 <Typography variant="body2" className="cardText">
-                    Date: {event.getDate()}
+                    Start date: {event.getStartDate()}
                     <br />
-                    Start time: {startDate.getHours()}:{startDate.getMinutes()}
+                    Start time: {startTime}
                     <br />
-                    Teams: {teams}
+                    End date: {event.getEndDate()}
                     <br />
-                    End time: {endDate.getHours()}:{endDate.getMinutes()}
+                    End time: {endTime}
                 </Typography>
                 <Typography variant="body2" className="cartStatus">
+                    Teams: {teams}
+                    <br />
                     {statusString}
                 </Typography>
             </CardContent>

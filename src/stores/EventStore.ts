@@ -1,4 +1,5 @@
-import { action, makeObservable, observable } from "mobx";
+import { action, makeObservable, observable, runInAction } from "mobx";
+import axios from "axios";
 
 import { RootStore } from "./RootStore";
 import { BaseItem } from "../models/BaseItem";
@@ -20,26 +21,40 @@ export class EventStore extends BaseItem {
         this.rootStore = rootStore;
         this.events = [];
         this.selectedEvent = null;
-
-        this.init();
     }
 
     @action
-    private init() {
+    public init() {
         this.startLoading();
         this.getEvents();
-        this.endLoading();
     }
 
     @action
-    private getEvents(): void {
+    private async getEvents(): Promise<void> {
+        try {
+            const response = await axios.get("http://localhost:5000/api/Events/summary");
+            const eventsData: IEvent[] = response.data;
+
+            runInAction(() => {
+                this.events = eventsData.map(eventData => new Event(eventData));
+                this.getEventsMock();
+                this.checkForActiveEvents();
+                this.endLoading();
+            });
+        } catch (error) {
+            console.error("Failed to fetch events", error);
+        }
+    }
+
+    @action
+    private getEventsMock(): void {
         const mockEvents: IEvent[] = [
             {
-                id: 1,
+                id: 11,
                 title: "Orientacinės varžybos \"City Rally'25\"",
                 description: "This is the first event",
                 startDate: new Date("2025-08-27T12:30"),
-                endDate: new Date("2025-08-27T17:30"),
+                endDate: new Date("2025-08-27T17:03"),
                 primaryColor: "#A78BE3",
                 secondaryColor: "#D59330",
                 state: EventStatus.Created,
@@ -156,8 +171,10 @@ export class EventStore extends BaseItem {
             }
         ];
 
-        this.events = mockEvents.map(eventData => new Event(eventData));
-        this.checkForActiveEvents();
+        this.events = [
+            ...this.events,
+            ...mockEvents.map(eventData => new Event(eventData))
+        ];
     }
 
     @action

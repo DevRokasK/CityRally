@@ -12,7 +12,7 @@ import TextField from '@mui/material/TextField';
 
 import "./CommandBar.css";
 
-import { ColorButton } from '../Helpers/Buttons';
+import { ColorButton } from '../BaseComponents/Buttons';
 import { Event, EventStatus } from '../../models/Event';
 import { EventStore } from '../../stores/EventStore';
 import { EventSettingsModal } from '../Modals/EventSettingsModal';

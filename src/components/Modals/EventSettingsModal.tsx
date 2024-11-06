@@ -15,8 +15,8 @@ import dayjs, { Dayjs } from 'dayjs';
 import "./Modals.css";
 
 import { Event } from "../../models/Event";
-import { ColorButton, OutlinedButton } from "../Helpers/Buttons";
-import { EventStatusTag } from "../Helpers/StatusTag";
+import { ColorButton, OutlinedButton } from "../BaseComponents/Buttons";
+import { EventStatusTag } from "../BaseComponents/StatusTag";
 
 export interface IEventSettingsModal {
     isOpen: boolean;
@@ -29,7 +29,7 @@ export const EventSettingsModal = observer((props: IEventSettingsModal) => {
     const { title, description, startDate, endDate, state, primaryColor, secondaryColor } = event;
 
     const [startDateValue, setStartDateValue] = useState<Dayjs | null>(dayjs(startDate ? startDate : Date.now()));
-    const [endDateValue, setEndDateValue] = useState<Dayjs | null>(dayjs(endDate ? startDate : Date.now()));
+    const [endDateValue, setEndDateValue] = useState<Dayjs | null>(dayjs(endDate ? endDate : Date.now()));
     const [startHour, setStartHour] = useState<string>(startDateValue?.hour().toString() || "00");
     const [startMinute, setStartMinute] = useState<string>(startDateValue?.minute().toString() || "00");
     const [endHour, setEndHour] = useState<string>(endDateValue?.hour().toString() || "00");
