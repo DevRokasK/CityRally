@@ -23,4 +23,11 @@ public class GuidesController : ControllerBase
         // Update existing guide
         return NoContent();
     }
+
+    [HttpDelete("{id}")]
+    public IActionResult DeleteGuide(int id)
+    {
+        // Delete guide by id
+        return NoContent();
+    }
 }

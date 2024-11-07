@@ -6,8 +6,12 @@ public class ApplicationDbContext : DbContext
     {
     }
 
-    // Define your DbSets here
     public DbSet<Event> Events { get; set; }
+
     public DbSet<Team> Teams { get; set; }
-    // Add other DbSets as needed
+    public DbSet<Guide> Guides { get; set; }
+
+    public DbSet<Task> Tasks { get; set; }
+    public DbSet<Subtask> Subtasks { get; set; }
+
 }
