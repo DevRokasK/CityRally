@@ -6,6 +6,9 @@ import { BaseItem } from "../models/BaseItem";
 import { Event, EventStatus, IEvent } from "../models/Event";
 import { TaskStore } from "./TaskStore";
 import { TeamStore } from "./TeamStore";
+import { EventResponse } from "../Helpers";
+import { Task } from "../models/Task";
+import { Team } from "../models/Team";
 
 export class EventStore extends BaseItem {
     public rootStore: RootStore;
@@ -32,12 +35,13 @@ export class EventStore extends BaseItem {
     @action
     private async getEvents(): Promise<void> {
         try {
+            this.events = [];
             const response = await axios.get("http://localhost:5000/api/Events/summary");
             const eventsData: IEvent[] = response.data;
 
             runInAction(() => {
                 this.events = eventsData.map(eventData => new Event(eventData));
-                this.getEventsMock();
+                //this.getEventsMock();
                 this.checkForActiveEvents();
                 this.endLoading();
             });
@@ -58,8 +62,8 @@ export class EventStore extends BaseItem {
                 primaryColor: "#A78BE3",
                 secondaryColor: "#D59330",
                 state: EventStatus.Created,
-                tasks: new TaskStore(),
-                teams: new TeamStore()
+                taskStore: new TaskStore(),
+                teamStore: new TeamStore()
             },
             {
                 id: 2,
@@ -70,8 +74,8 @@ export class EventStore extends BaseItem {
                 primaryColor: "#A78BE3",
                 secondaryColor: "#D59330",
                 state: EventStatus.Created,
-                tasks: new TaskStore(),
-                teams: new TeamStore()
+                taskStore: new TaskStore(),
+                teamStore: new TeamStore()
             },
             {
                 id: 3,
@@ -82,8 +86,8 @@ export class EventStore extends BaseItem {
                 primaryColor: "#8EA4D2",
                 secondaryColor: "#6279B8",
                 state: EventStatus.Closed,
-                tasks: new TaskStore(),
-                teams: new TeamStore()
+                taskStore: new TaskStore(),
+                teamStore: new TeamStore()
             },
             {
                 id: 4,
@@ -94,8 +98,8 @@ export class EventStore extends BaseItem {
                 primaryColor: "#FF5733",
                 secondaryColor: "#FF5733",
                 state: EventStatus.Closed,
-                tasks: new TaskStore(),
-                teams: new TeamStore()
+                taskStore: new TaskStore(),
+                teamStore: new TeamStore()
             },
             {
                 id: 5,
@@ -106,8 +110,8 @@ export class EventStore extends BaseItem {
                 primaryColor: "#FF5733",
                 secondaryColor: "#FF5733",
                 state: EventStatus.Closed,
-                tasks: new TaskStore(),
-                teams: new TeamStore()
+                taskStore: new TaskStore(),
+                teamStore: new TeamStore()
             },
             {
                 id: 6,
@@ -118,8 +122,8 @@ export class EventStore extends BaseItem {
                 primaryColor: "#FF5733",
                 secondaryColor: "#FF5733",
                 state: EventStatus.Draft,
-                tasks: new TaskStore(),
-                teams: new TeamStore()
+                taskStore: new TaskStore(),
+                teamStore: new TeamStore()
             },
             {
                 id: 7,
@@ -130,8 +134,8 @@ export class EventStore extends BaseItem {
                 primaryColor: "#FF5733",
                 secondaryColor: "#FF5733",
                 state: EventStatus.Closed,
-                tasks: new TaskStore(),
-                teams: new TeamStore()
+                taskStore: new TaskStore(),
+                teamStore: new TeamStore()
             },
             {
                 id: 8,
@@ -142,8 +146,8 @@ export class EventStore extends BaseItem {
                 primaryColor: "#FF5733",
                 secondaryColor: "#FF5733",
                 state: EventStatus.Draft,
-                tasks: new TaskStore(),
-                teams: new TeamStore()
+                taskStore: new TaskStore(),
+                teamStore: new TeamStore()
             },
             {
                 id: 9,
@@ -154,8 +158,8 @@ export class EventStore extends BaseItem {
                 primaryColor: "#FF5733",
                 secondaryColor: "#FFD700",
                 state: EventStatus.Closed,
-                tasks: new TaskStore(),
-                teams: new TeamStore()
+                taskStore: new TaskStore(),
+                teamStore: new TeamStore()
             },
             {
                 id: 10,
@@ -166,8 +170,8 @@ export class EventStore extends BaseItem {
                 primaryColor: "#FF5733",
                 secondaryColor: "#FFD700",
                 state: EventStatus.Closed,
-                tasks: new TaskStore(),
-                teams: new TeamStore()
+                taskStore: new TaskStore(),
+                teamStore: new TeamStore()
             }
         ];
 
@@ -224,33 +228,41 @@ export class EventStore extends BaseItem {
     }
 
     @action
-    public selectEvent(id: string): Event {
+    public async selectEvent(id: string): Promise<Event> {
+        this.loading = true;
+        let event: Event | null = null;
+
         if (id === "new") {
-            this.selectedEvent = new Event({
-                id: +id,
+            event = new Event({
+                id: 0,
                 title: "",
                 description: "",
                 startDate: null,
                 endDate: null,
                 primaryColor: null,
                 secondaryColor: null,
-                state: EventStatus.New
+                state: EventStatus.New,
             });
+        } else {
+            try {
+                const response = await axios.get(`http://localhost:5000/api/Events/${id}`);
+                const data: EventResponse = response.data;
 
-            return this.selectedEvent;
+                event = new Event(data);
+                console.log("Tasks fetched:", data.tasks);
+                event.taskStore.tasks = data.tasks.map(taskData => new Task(taskData));
+                console.log("TaskStore tasks after mapping:", event.taskStore.tasks);
+                event.teamStore.teams = data.teams.map(teamData => new Team(teamData));
+            } catch (error) {
+                console.error("Error fetching event", error);
+            }
         }
 
-        const existingEventIndex = this.events.findIndex(event => event.id === +id);
+        runInAction(() => {
+            this.loading = false;
+        });
 
-        if (existingEventIndex < 0) {
-            return null;
-        }
-
-        const event = this.events[existingEventIndex];
-        event.loadData();
-        this.selectedEvent = event.deepClone();
-
-        return this.selectedEvent;
+        return event;
     }
 
     @action

@@ -21,8 +21,7 @@ export const Home = observer((props: IHomeProps) => {
     React.useEffect(() => {
         eventStore.init();
 
-        return () => {
-        };
+        return () => { };
     }, [eventStore]);
 
     const [currentEvents, draftEvents, pastEvents] = eventStore.sortEvents();

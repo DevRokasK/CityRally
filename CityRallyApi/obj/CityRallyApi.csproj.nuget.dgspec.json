@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\halo2\\Desktop\\Uni\\IS kūrimas karkasais\\city-rally\\CityRallyApi\\CityRallyApi.csproj": {}
+    "C:\\Users\\halo2\\Desktop\\City Rally\\CityRally\\CityRallyApi\\CityRallyApi.csproj": {}
   },
   "projects": {
-    "C:\\Users\\halo2\\Desktop\\Uni\\IS kūrimas karkasais\\city-rally\\CityRallyApi\\CityRallyApi.csproj": {
+    "C:\\Users\\halo2\\Desktop\\City Rally\\CityRally\\CityRallyApi\\CityRallyApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\halo2\\Desktop\\Uni\\IS kūrimas karkasais\\city-rally\\CityRallyApi\\CityRallyApi.csproj",
+        "projectUniqueName": "C:\\Users\\halo2\\Desktop\\City Rally\\CityRally\\CityRallyApi\\CityRallyApi.csproj",
         "projectName": "CityRallyApi",
-        "projectPath": "C:\\Users\\halo2\\Desktop\\Uni\\IS kūrimas karkasais\\city-rally\\CityRallyApi\\CityRallyApi.csproj",
+        "projectPath": "C:\\Users\\halo2\\Desktop\\City Rally\\CityRally\\CityRallyApi\\CityRallyApi.csproj",
         "packagesPath": "C:\\Users\\halo2\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\halo2\\Desktop\\Uni\\IS kūrimas karkasais\\city-rally\\CityRallyApi\\obj\\",
+        "outputPath": "C:\\Users\\halo2\\Desktop\\City Rally\\CityRally\\CityRallyApi\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\halo2\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -22,6 +22,7 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -81,7 +82,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.204/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.403/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

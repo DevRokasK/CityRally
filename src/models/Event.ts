@@ -1,7 +1,11 @@
-import { action, observable } from "mobx";
+import { action, observable, runInAction } from "mobx";
 import { BaseItem } from "./BaseItem";
 import { TaskStore } from "../stores/TaskStore";
 import { TeamStore } from "../stores/TeamStore";
+import axios from "axios";
+import { EventResponse } from "../Helpers";
+import { Task } from "./Task";
+import { Team } from "./Team";
 
 export enum EventStatus {
     New,
@@ -19,8 +23,8 @@ export interface IEvent {
     primaryColor: string;
     secondaryColor: string;
     state: EventStatus;
-    tasks?: TaskStore;
-    teams?: TeamStore;
+    taskStore?: TaskStore;
+    teamStore?: TeamStore;
     teamCount?: number;
 }
 
@@ -33,8 +37,8 @@ export class Event extends BaseItem implements IEvent {
     @observable public primaryColor: string;
     @observable public secondaryColor: string;
     @observable public state: EventStatus;
-    @observable public tasks: TaskStore;
-    @observable public teams: TeamStore;
+    @observable public taskStore: TaskStore;
+    @observable public teamStore: TeamStore;
     @observable public teamCount: number;
 
     public constructor(data: IEvent) {
@@ -49,20 +53,16 @@ export class Event extends BaseItem implements IEvent {
         this.secondaryColor = data.secondaryColor;
         this.state = data.state;
 
-        if (data.tasks) {
-            this.tasks = data.tasks;
+        if (data.taskStore) {
+            this.taskStore = data.taskStore;
         } else {
-            this.tasks = new TaskStore();
+            this.taskStore = new TaskStore();
         }
 
-        if (data.teams) {
-            this.teams = data.teams;
+        if (data.teamStore) {
+            this.teamStore = data.teamStore;
         } else {
-            this.teams = new TeamStore();
-        }
-
-        if (this.state !== EventStatus.New) {
-            this.teams.getTeams();
+            this.teamStore = new TeamStore();
         }
 
         if (data.teamCount) {
@@ -81,14 +81,27 @@ export class Event extends BaseItem implements IEvent {
     }
 
     @action
-    public loadData() {
-        this.tasks.getTasks();
+    public async loadData() {
+        try {
+            const response = await axios.get(`http://localhost:5000/api/Events/${this.id}`);
+            const data: EventResponse = response.data;
+    
+            runInAction(() => {
+                console.log("Tasks fetched:", data.tasks); // Debugging
+                this.taskStore.tasks = data.tasks.map(taskData => new Task(taskData));
+                console.log("TaskStore tasks after mapping:", this.taskStore.tasks); // Debugging
+                this.teamStore.teams = data.teams.map(teamData => new Team(teamData));
+                this.endLoading();
+            });
+        } catch (error) {
+            console.error("Failed to fetch event data", error);
+        }
     }
 
     @action
     public deepClone(): Event {
-        const tasks = this.tasks.deepClone();
-        const teams = this.teams.deepClone();
+        const tasks = this.taskStore.deepClone();
+        const teams = this.teamStore.deepClone();
 
         return new Event({
             id: this.id,
@@ -99,8 +112,8 @@ export class Event extends BaseItem implements IEvent {
             primaryColor: this.primaryColor,
             secondaryColor: this.secondaryColor,
             state: this.state,
-            tasks: tasks,
-            teams: teams
+            taskStore: tasks,
+            teamStore: teams
         });
     }
 

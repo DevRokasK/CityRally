@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CityRallyApi")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+64cd1746f44d46bf58491f4761a8b5e59896d198")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+216fadb0e9ef9dfa3e3d91a6b40ccd112a327b40")]
 [assembly: System.Reflection.AssemblyProductAttribute("CityRallyApi")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CityRallyApi")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

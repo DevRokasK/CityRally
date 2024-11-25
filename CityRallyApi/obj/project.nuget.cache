@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "TuJzU7gsDbRibLnJNTXzPmWpofbjT27FAp7ndvH7KE9qPapLZzYCfOKK9842p+2VlEmawXMV4Y0HxkZPBoK1Dw==",
+  "dgSpecHash": "pU7uDCW6ScY=",
   "success": true,
-  "projectFilePath": "C:\\Users\\halo2\\Desktop\\Uni\\IS kūrimas karkasais\\city-rally\\CityRallyApi\\CityRallyApi.csproj",
+  "projectFilePath": "C:\\Users\\halo2\\Desktop\\City Rally\\CityRally\\CityRallyApi\\CityRallyApi.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\halo2\\.nuget\\packages\\azure.core\\1.35.0\\azure.core.1.35.0.nupkg.sha512",
     "C:\\Users\\halo2\\.nuget\\packages\\azure.identity\\1.10.3\\azure.identity.1.10.3.nupkg.sha512",

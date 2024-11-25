@@ -20,7 +20,7 @@ export interface IEventCardProps {
 export const EventCard = observer((props: IEventCardProps) => {
     const { event } = props;
     const { title, startDate, endDate, primaryColor, secondaryColor } = event;
-    const teams = event.teamCount ? event.teamCount : event.teams.teams.length;
+    const teams = event.teamCount ? event.teamCount : event.teamStore.teams.length;
 
     let statusString: string = event.getStateString();
 
