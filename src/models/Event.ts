@@ -72,12 +72,12 @@ export class Event extends BaseItem implements IEvent {
 
     @action
     public getStartDate() {
-        return `${this.startDate.getFullYear()}-${this.startDate.getMonth()}-${this.startDate.getDate()}`;
+        return `${this.startDate.getFullYear()}-${(this.startDate.getMonth() + 1).toString().padStart(2, '0')}-${this.startDate.getDate().toString().padStart(2, '0')}`;
     }
 
     @action
     public getEndDate() {
-        return `${this.endDate.getFullYear()}-${this.endDate.getMonth()}-${this.endDate.getDate()}`;
+        return `${this.endDate.getFullYear()}-${(this.endDate.getMonth() + 1).toString().padStart(2, '0')}-${this.endDate.getDate().toString().padStart(2, '0')}`;
     }
 
     @action
@@ -85,36 +85,15 @@ export class Event extends BaseItem implements IEvent {
         try {
             const response = await axios.get(`http://localhost:5000/api/Events/${this.id}`);
             const data: EventResponse = response.data;
-    
+
             runInAction(() => {
-                console.log("Tasks fetched:", data.tasks); // Debugging
                 this.taskStore.tasks = data.tasks.map(taskData => new Task(taskData));
-                console.log("TaskStore tasks after mapping:", this.taskStore.tasks); // Debugging
                 this.teamStore.teams = data.teams.map(teamData => new Team(teamData));
                 this.endLoading();
             });
         } catch (error) {
             console.error("Failed to fetch event data", error);
         }
-    }
-
-    @action
-    public deepClone(): Event {
-        const tasks = this.taskStore.deepClone();
-        const teams = this.teamStore.deepClone();
-
-        return new Event({
-            id: this.id,
-            title: this.title,
-            description: this.description,
-            startDate: new Date(this.startDate),
-            endDate: new Date(this.endDate),
-            primaryColor: this.primaryColor,
-            secondaryColor: this.secondaryColor,
-            state: this.state,
-            taskStore: tasks,
-            teamStore: teams
-        });
     }
 
     @action
@@ -139,7 +118,22 @@ export class Event extends BaseItem implements IEvent {
     }
 
     @action
-    public setTitle(newTitle: string) {
+    public setTitle(newTitle: string): void {
         this.title = newTitle;
+    }
+
+    @action
+    public setDesctirption(newDescription: string): void {
+        this.description = newDescription
+    }
+
+    @action
+    public setStartDate(newDate: Date): void {
+        this.startDate = newDate;
+    }
+
+    @action
+    public setEndDate(newDate: Date): void {
+        this.endDate = newDate;
     }
 }

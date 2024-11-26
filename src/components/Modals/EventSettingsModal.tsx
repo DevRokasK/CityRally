@@ -20,13 +20,14 @@ import { EventStatusTag } from "../BaseComponents/StatusTag";
 
 export interface IEventSettingsModal {
     isOpen: boolean;
+    onSave: () => void;
     onClose: () => void;
     event: Event;
 };
 
 export const EventSettingsModal = observer((props: IEventSettingsModal) => {
-    const { isOpen, onClose, event } = props;
-    const { title, description, startDate, endDate, state, primaryColor, secondaryColor } = event;
+    const { isOpen, onSave, onClose, event } = props;
+    const { title, description, startDate, endDate, state/* , primaryColor, secondaryColor */ } = event;
 
     const [startDateValue, setStartDateValue] = useState<Dayjs | null>(dayjs(startDate ? startDate : Date.now()));
     const [endDateValue, setEndDateValue] = useState<Dayjs | null>(dayjs(endDate ? endDate : Date.now()));
@@ -36,18 +37,82 @@ export const EventSettingsModal = observer((props: IEventSettingsModal) => {
     const [endMinute, setEndMinute] = useState<string>(endDateValue?.minute().toString() || "00");
 
     const handleStartDateChange = (newValue: Dayjs | null) => {
+        newValue = newValue.set('hour', parseInt(startHour)).set('minute', parseInt(startMinute));
         setStartDateValue(newValue);
         if (newValue) {
             setStartHour(newValue.hour().toString());
             setStartMinute(newValue.minute().toString());
+            event.setStartDate(newValue.toDate());
         }
     };
 
     const handleEndDateChange = (newValue: Dayjs | null) => {
+        newValue = newValue.set('hour', parseInt(endHour)).set('minute', parseInt(endMinute));
         setEndDateValue(newValue);
         if (newValue) {
             setEndHour(newValue.hour().toString());
             setEndMinute(newValue.minute().toString());
+            event.setEndDate(newValue.toDate());
+        }
+    };
+
+    const handleStartHourChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const newStartHour = e.target.value;
+        setStartHour(newStartHour);
+
+        if (e.target.value === '') {
+            return;
+        }
+
+        if (startDateValue) {
+            const updatedDate = startDateValue.set('hour', parseInt(newStartHour));
+            setStartDateValue(updatedDate);
+            event.setStartDate(updatedDate.toDate());
+        }
+    };
+
+    const handleStartMinuteChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const newStartMinute = e.target.value;
+        setStartMinute(newStartMinute);
+
+        if (e.target.value === '') {
+            return;
+        }
+
+        if (startDateValue) {
+            const updatedDate = startDateValue.set('minute', parseInt(newStartMinute));
+            setStartDateValue(updatedDate);
+            event.setStartDate(updatedDate.toDate());
+        }
+    };
+
+    const handleEndHourChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const newEndHour = e.target.value;
+        setEndHour(newEndHour);
+        
+        if (e.target.value === '') {
+            return;
+        }    
+
+        if (endDateValue) {
+            const updatedDate = endDateValue.set('hour', parseInt(newEndHour));
+            setEndDateValue(updatedDate);
+            event.setEndDate(updatedDate.toDate());
+        }
+    };
+
+    const handleEndMinuteChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const newEndMinute = e.target.value;
+        setEndMinute(newEndMinute);
+        
+        if (e.target.value === '') {
+            return;
+        }
+
+        if (endDateValue) {
+            const updatedDate = endDateValue.set('minute', parseInt(newEndMinute));
+            setEndDateValue(updatedDate);
+            event.setEndDate(updatedDate.toDate());
         }
     };
 
@@ -75,15 +140,17 @@ export const EventSettingsModal = observer((props: IEventSettingsModal) => {
                     variant="standard"
                     className='eventTitleEdit'
                     defaultValue={title}
+                    onChange={(e) => event.setTitle(e.target.value)}
                 />
                 <TextField
-                    sx={{ width: "100%", marginTop: "16px", marginBottom:"24px" }}
+                    sx={{ width: "100%", marginTop: "16px", marginBottom: "24px" }}
                     id="standard-multiline-flexible"
                     label="Description"
                     multiline
                     maxRows={4}
                     variant="standard"
                     defaultValue={description}
+                    onChange={(e) => event.setDesctirption(e.target.value)}
                 />
                 <Typography variant="h6" >Event date</Typography>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -102,7 +169,7 @@ export const EventSettingsModal = observer((props: IEventSettingsModal) => {
                                     variant="standard"
                                     className="smallTextfield"
                                     value={startHour}
-                                    onChange={(e) => setStartHour(e.target.value)}
+                                    onChange={handleStartHourChange}
                                     inputProps={{ min: 0, max: 23 }}
                                 />
                                 <TextField
@@ -111,7 +178,7 @@ export const EventSettingsModal = observer((props: IEventSettingsModal) => {
                                     variant="standard"
                                     className="smallTextfield"
                                     value={startMinute}
-                                    onChange={(e) => setStartMinute(e.target.value)}
+                                    onChange={handleStartMinuteChange}
                                     inputProps={{ min: 0, max: 59 }}
                                 />
                             </div>
@@ -130,7 +197,7 @@ export const EventSettingsModal = observer((props: IEventSettingsModal) => {
                                     variant="standard"
                                     className="smallTextfield"
                                     value={endHour}
-                                    onChange={(e) => setEndHour(e.target.value)}
+                                    onChange={handleEndHourChange}
                                     inputProps={{ min: 0, max: 23 }}
                                 />
                                 <TextField
@@ -139,14 +206,14 @@ export const EventSettingsModal = observer((props: IEventSettingsModal) => {
                                     variant="standard"
                                     className="smallTextfield"
                                     value={endMinute}
-                                    onChange={(e) => setEndMinute(e.target.value)}
+                                    onChange={handleEndMinuteChange}
                                     inputProps={{ min: 0, max: 59 }}
                                 />
                             </div>
                         </div>
                     </div>
                 </LocalizationProvider>
-                <Typography variant="h6" >Select card colors</Typography>
+                {/* <Typography variant="h6" >Select card colors</Typography>
                 <div className="colorContainer">
                     <TextField
                         id="standard-basic"
@@ -162,9 +229,9 @@ export const EventSettingsModal = observer((props: IEventSettingsModal) => {
                         className='eventTitleEdit'
                         defaultValue={secondaryColor}
                     />
-                </div>
+                </div> */}
                 <div className="modalFooterButtons">
-                    <ColorButton variant="contained">Save</ColorButton>
+                    <ColorButton variant="contained" onClick={onSave}>Save</ColorButton>
                     <OutlinedButton variant="outlined" onClick={onClose}>Cancel</OutlinedButton>
                 </div>
             </div>

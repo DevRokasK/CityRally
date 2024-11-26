@@ -4,8 +4,6 @@ import axios from "axios";
 import { RootStore } from "./RootStore";
 import { BaseItem } from "../models/BaseItem";
 import { Event, EventStatus, IEvent } from "../models/Event";
-import { TaskStore } from "./TaskStore";
-import { TeamStore } from "./TeamStore";
 import { EventResponse } from "../Helpers";
 import { Task } from "../models/Task";
 import { Team } from "../models/Team";
@@ -35,14 +33,14 @@ export class EventStore extends BaseItem {
     @action
     private async getEvents(): Promise<void> {
         try {
+            await this.updateEventState();
+
             this.events = [];
             const response = await axios.get("http://localhost:5000/api/Events/summary");
             const eventsData: IEvent[] = response.data;
 
             runInAction(() => {
                 this.events = eventsData.map(eventData => new Event(eventData));
-                //this.getEventsMock();
-                this.checkForActiveEvents();
                 this.endLoading();
             });
         } catch (error) {
@@ -51,153 +49,12 @@ export class EventStore extends BaseItem {
     }
 
     @action
-    private getEventsMock(): void {
-        const mockEvents: IEvent[] = [
-            {
-                id: 11,
-                title: "Orientacinės varžybos \"City Rally'25\"",
-                description: "This is the first event",
-                startDate: new Date("2025-08-27T12:30"),
-                endDate: new Date("2025-08-27T17:03"),
-                primaryColor: "#A78BE3",
-                secondaryColor: "#D59330",
-                state: EventStatus.Created,
-                taskStore: new TaskStore(),
-                teamStore: new TeamStore()
-            },
-            {
-                id: 2,
-                title: "Orientacinės varžybos \"City Rally'24\"",
-                description: "This is the second event",
-                startDate: new Date("2024-08-27T12:30"),
-                endDate: new Date("2024-12-27T17:30"),
-                primaryColor: "#A78BE3",
-                secondaryColor: "#D59330",
-                state: EventStatus.Created,
-                taskStore: new TaskStore(),
-                teamStore: new TeamStore()
-            },
-            {
-                id: 3,
-                title: "Orientacinės varžybos \"City Rally'23\"",
-                description: "This is the third event",
-                startDate: new Date("2023-08-27T12:30"),
-                endDate: new Date("2023-08-27T17:30"),
-                primaryColor: "#8EA4D2",
-                secondaryColor: "#6279B8",
-                state: EventStatus.Closed,
-                taskStore: new TaskStore(),
-                teamStore: new TeamStore()
-            },
-            {
-                id: 4,
-                title: "Orientacinės varžybos \"City Rally'22\"",
-                description: "This is the fourth event",
-                startDate: new Date("2022-07-15T09:00"),
-                endDate: new Date("2022-07-15T14:00"),
-                primaryColor: "#FF5733",
-                secondaryColor: "#FF5733",
-                state: EventStatus.Closed,
-                taskStore: new TaskStore(),
-                teamStore: new TeamStore()
-            },
-            {
-                id: 5,
-                title: "Orientacinės varžybos \"City Rally'21\"",
-                description: "This is the fifth event",
-                startDate: new Date("2021-06-10T10:30"),
-                endDate: new Date("2021-06-10T15:30"),
-                primaryColor: "#FF5733",
-                secondaryColor: "#FF5733",
-                state: EventStatus.Closed,
-                taskStore: new TaskStore(),
-                teamStore: new TeamStore()
-            },
-            {
-                id: 6,
-                title: "Orientacinės varžybos \"City Rally'26\"",
-                description: "This is the sixth event",
-                startDate: new Date("2026-05-20T13:00"),
-                endDate: new Date("2026-05-20T18:00"),
-                primaryColor: "#FF5733",
-                secondaryColor: "#FF5733",
-                state: EventStatus.Draft,
-                taskStore: new TaskStore(),
-                teamStore: new TeamStore()
-            },
-            {
-                id: 7,
-                title: "Orientacinės varžybos \"City Rally'20\"",
-                description: "This is the seventh event",
-                startDate: new Date("2020-04-25T11:00"),
-                endDate: new Date("2020-04-25T16:00"),
-                primaryColor: "#FF5733",
-                secondaryColor: "#FF5733",
-                state: EventStatus.Closed,
-                taskStore: new TaskStore(),
-                teamStore: new TeamStore()
-            },
-            {
-                id: 8,
-                title: "Orientacinės varžybos \"City Rally'27\"",
-                description: "This is the eighth event",
-                startDate: new Date("2027-09-05T09:30"),
-                endDate: new Date("2027-09-05T13:30"),
-                primaryColor: "#FF5733",
-                secondaryColor: "#FF5733",
-                state: EventStatus.Draft,
-                taskStore: new TaskStore(),
-                teamStore: new TeamStore()
-            },
-            {
-                id: 9,
-                title: "Orientacinės varžybos \"City Rally'19\"",
-                description: "This is the ninth event",
-                startDate: new Date("2019-03-12T14:00"),
-                endDate: new Date("2019-03-12T18:00"),
-                primaryColor: "#FF5733",
-                secondaryColor: "#FFD700",
-                state: EventStatus.Closed,
-                taskStore: new TaskStore(),
-                teamStore: new TeamStore()
-            },
-            {
-                id: 10,
-                title: "Orientacinės varžybos",
-                description: "This is the tenth event",
-                startDate: new Date("2019-03-12T14:30"),
-                endDate: new Date("2019-03-12T18:45"),
-                primaryColor: "#FF5733",
-                secondaryColor: "#FFD700",
-                state: EventStatus.Closed,
-                taskStore: new TaskStore(),
-                teamStore: new TeamStore()
-            }
-        ];
-
-        this.events = [
-            ...this.events,
-            ...mockEvents.map(eventData => new Event(eventData))
-        ];
-    }
-
-    @action
-    private checkForActiveEvents() {
-        const now = Date.now();
-        this.events.forEach(event => {
-            const startDate = event.startDate.getTime();
-            const endDate = event.endDate.getTime();
-
-            if (startDate < now && endDate > now) {
-                if (event.state !== EventStatus.Started) {
-                    event.state = EventStatus.Started;
-                }
-            } else if (endDate < now) {
-                if (event.state !== EventStatus.Closed) {
-                    event.state = EventStatus.Closed;
-                }
-            }
-        });
+    private async updateEventState() {
+        try {
+            await axios.put("http://localhost:5000/api/Events/update-state");
+        } catch (error) {
+            console.log("Failed to update event staate", error);
+        }
     }
 
     @action
@@ -228,34 +85,45 @@ export class EventStore extends BaseItem {
     }
 
     @action
+    public setEvent(event: Event): void {
+        this.selectedEvent = event;
+    }
+
+    @action
     public async selectEvent(id: string): Promise<Event> {
         this.loading = true;
         let event: Event | null = null;
 
         if (id === "new") {
+            const now = new Date();
+            const startDate = now;
+            const endDate = new Date(now);
+            endDate.setMonth(now.getMonth() + 1);
+
             event = new Event({
                 id: 0,
                 title: "",
                 description: "",
-                startDate: null,
-                endDate: null,
+                startDate: startDate,
+                endDate: endDate,
                 primaryColor: null,
                 secondaryColor: null,
                 state: EventStatus.New,
             });
-        } else {
-            try {
-                const response = await axios.get(`http://localhost:5000/api/Events/${id}`);
-                const data: EventResponse = response.data;
 
-                event = new Event(data);
-                console.log("Tasks fetched:", data.tasks);
-                event.taskStore.tasks = data.tasks.map(taskData => new Task(taskData));
-                console.log("TaskStore tasks after mapping:", event.taskStore.tasks);
-                event.teamStore.teams = data.teams.map(teamData => new Team(teamData));
-            } catch (error) {
-                console.error("Error fetching event", error);
-            }
+            this.loading = false;
+            return event;
+        }
+
+        try {
+            const response = await axios.get(`http://localhost:5000/api/Events/${id}`);
+            const data: EventResponse = response.data;
+
+            event = new Event(data);
+            event.taskStore.tasks = data.tasks.map(taskData => new Task(taskData));
+            event.teamStore.teams = data.teams.map(teamData => new Team(teamData));
+        } catch (error) {
+            console.error("Error fetching event", error);
         }
 
         runInAction(() => {
@@ -266,51 +134,189 @@ export class EventStore extends BaseItem {
     }
 
     @action
-    public createEvent(): void {
+    public async createEvent(eventStatus?: EventStatus): Promise<boolean> {
         if (!this.selectedEvent) {
-            return;
+            return false;
         }
 
-        const currentTime = Date.now();
-        const startDate = this.selectedEvent.startDate.getTime()
+        try {
+            const eventData = {
+                title: this.selectedEvent.title,
+                description: this.selectedEvent.description,
+                startDate: this.selectedEvent.startDate,
+                endDate: this.selectedEvent.endDate,
+                primaryColor: this.selectedEvent.primaryColor,
+                secondaryColor: this.selectedEvent.secondaryColor,
+                state: eventStatus ? eventStatus : EventStatus.Created,
+                tasks: this.selectedEvent.taskStore.tasks.map(task => ({
+                    isMain: task.isMain,
+                    isEnabled: task.isEnabled,
+                    subtasks: task.subtasks.map(subtask => ({
+                        title: subtask.title,
+                        points: subtask.points,
+                        isTimed: subtask.isTimed,
+                        startDate: subtask.startDate,
+                        endDate: subtask.endDate,
+                    })),
+                })),
+                teams: this.selectedEvent.teamStore.teams.map(team => ({
+                    title: team.title,
+                    guides: team.guides.map(guide => ({
+                        name: guide.name,
+                        email: guide.email,
+                        status: guide.status,
+                    })),
+                })),
+            };
 
-        if (startDate < currentTime) {
-            return;
-        }
+            const response = await axios.post("http://localhost:5000/api/Events", eventData);
 
-        this.selectedEvent.state = EventStatus.Created;
-        this.saveEvent();
-    }
-
-    @action
-    public saveEvent(): void {
-        const existingEventIndex = this.events.findIndex(event => event.id === this.selectedEvent.id);
-        if (this.selectedEvent.state === EventStatus.New) {
-            this.selectedEvent.state = EventStatus.Created;
-        }
-
-        if (existingEventIndex > -1) {
-            this.events[existingEventIndex] = this.selectedEvent.deepClone();
-        } else {
-            this.events.push(this.selectedEvent.deepClone());
-        }
-    }
-
-    @action
-    public saveAsDraftEvent(): void {
-        if (this.selectedEvent) {
-            if (this.selectedEvent.state === EventStatus.Closed) {
-                this.selectedEvent.id = this.events[this.events.length - 1].id++;
+            if (response.status === 201) {
+                const savedEvent = response.data;
+                runInAction(() => {
+                    this.events.push(new Event(savedEvent));
+                    this.selectedEvent = null;
+                });
+                console.log("Event created successfully.");
+                return true;
+            } else {
+                console.error("Failed to create event:", response);
+                return false;
             }
-
-            this.selectedEvent.state = EventStatus.Draft;
-            this.saveEvent();
+        } catch (error) {
+            console.error("Error saving new event:", error);
+            return false;
         }
     }
 
     @action
-    public deleteEvent(): void {
-        this.events = this.events.filter(event => event.id !== this.selectedEvent.id);
-        this.selectedEvent = null;
+    public async saveEvent(eventStatus?: EventStatus): Promise<boolean> {
+        if (!this.selectedEvent) {
+            console.error("No selected event to update.");
+            return false;
+        }
+
+        try {
+            const eventData = {
+                title: this.selectedEvent.title,
+                description: this.selectedEvent.description,
+                startDate: this.selectedEvent.startDate,
+                endDate: this.selectedEvent.endDate,
+                primaryColor: this.selectedEvent.primaryColor,
+                secondaryColor: this.selectedEvent.secondaryColor,
+                state: eventStatus ? eventStatus : this.selectedEvent.state,
+                tasks: this.selectedEvent.taskStore.tasks.map(task => ({
+                    id: task.id,
+                    isMain: task.isMain,
+                    isEnabled: task.isEnabled,
+                    subtasks: task.subtasks.map(subtask => ({
+                        id: subtask.id,
+                        title: subtask.title,
+                        points: subtask.points,
+                        isTimed: subtask.isTimed,
+                        startDate: subtask.startDate,
+                        endDate: subtask.endDate,
+                    })),
+                })),
+                teams: this.selectedEvent.teamStore.teams.map(team => ({
+                    id: team.id,
+                    title: team.title,
+                    guides: team.guides.map(guide => ({
+                        id: guide.id,
+                        name: guide.name,
+                        email: guide.email,
+                        status: guide.status,
+                    })),
+                })),
+            };
+
+            const response = await axios.post(`http://localhost:5000/api/Events/${this.selectedEvent.id}`, eventData);
+
+            if (response.status === 201) {
+                const savedEvent = response.data;
+                runInAction(() => {
+                    this.events.push(new Event(savedEvent));
+                    this.selectedEvent = null;
+                });
+                console.log("Event created successfully.");
+                return true;
+            } else {
+                console.error("Failed to create event:", response);
+                return false;
+            }
+        } catch (error) {
+            console.error("Error saving new event:", error);
+            return false;
+        }
+    }
+
+    @action
+    public async saveAsDraftEvent(createNew: boolean): Promise<boolean> {
+        if (!this.selectedEvent) {
+            console.error("No selected event to update.");
+            return false;
+        }
+
+        if (createNew) {
+            this.createEvent(EventStatus.Draft);
+        } else {
+            this.saveEvent(EventStatus.Draft);
+        }
+
+        return true;
+    }
+
+    @action
+    public async deleteEvent(): Promise<boolean> {
+        if (!this.selectedEvent) {
+            console.error("No selected event to update.");
+            return false;
+        }
+
+        try {
+            const response = await axios.delete(`http://localhost:5000/api/Events/${this.selectedEvent.id}`);
+
+            if (response.status === 200) {
+                console.log("Event deleted successfully.");
+                return true;
+            } else {
+                console.error("Failed to delete event:", response);
+                return false;
+            }
+        } catch (error) {
+            console.error("Error deleting event:", error);
+            return false;
+        }
+    }
+
+    @action
+    public async updateEvent(): Promise<boolean> {
+        if (!this.selectedEvent) {
+            console.error("No selected event to update.");
+            return false;
+        }
+
+        try {
+            const response = await axios.put(`http://localhost:5000/api/Events/${this.selectedEvent.id}`, {
+                title: this.selectedEvent.title,
+                description: this.selectedEvent.description,
+                startDate: this.selectedEvent.startDate,
+                endDate: this.selectedEvent.endDate,
+                primaryColor: this.selectedEvent.primaryColor,
+                secondaryColor: this.selectedEvent.secondaryColor,
+                state: this.selectedEvent.state,
+            });
+
+            if (response.status === 204) {
+                console.log("Event updated successfully.");
+                return true;
+            } else {
+                console.error("Failed to update event:", response);
+                return false;
+            }
+        } catch (error) {
+            console.error("Error updating event:", error);
+            return false;
+        }
     }
 }

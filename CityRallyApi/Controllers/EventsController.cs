@@ -14,24 +14,6 @@ public class EventsController : ControllerBase
         _context = context;
     }
 
-    //[HttpGet]
-    //public ActionResult<IEnumerable<Event>> GetAllEvents()
-    //{
-    //    var events = _context.Events
-    //    .Include(e => e.Teams)
-    //        .ThenInclude(t => t.Guides)
-    //    .Include(e => e.Tasks)
-    //        .ThenInclude(t => t.Subtasks)
-    //    .ToList();
-
-    //    if (events == null || !events.Any())
-    //    {
-    //        return NotFound("No events found.");
-    //    }
-
-    //    return Ok(events);
-    //}
-
     [HttpGet("summary")]
     public ActionResult<List<EventSummary>> GetAllEventSummaries()
     {
@@ -77,12 +59,32 @@ public class EventsController : ControllerBase
     }
 
     [HttpPost]
-    public ActionResult<Event> CreateEvent([FromBody] Event newEvent)
+    public ActionResult<Event> UpsertEvent([FromBody] Event eventDto)
     {
-        _context.Events.Add(newEvent);
-        _context.SaveChanges();
+        var existingEvent = _context.Events.FirstOrDefault(e => e.Id == eventDto.Id);
 
-        return CreatedAtAction(nameof(GetEventById), new { id = newEvent.Id }, newEvent);
+        if (existingEvent != null)
+        {
+            existingEvent.Title = eventDto.Title;
+            existingEvent.Description = eventDto.Description;
+            existingEvent.StartDate = eventDto.StartDate;
+            existingEvent.EndDate = eventDto.EndDate;
+            existingEvent.PrimaryColor = eventDto.PrimaryColor;
+            existingEvent.SecondaryColor = eventDto.SecondaryColor;
+            existingEvent.State = eventDto.State;
+
+            _context.Events.Update(existingEvent);
+            _context.SaveChanges();
+
+            return Ok(existingEvent);
+        }
+        else
+        {
+            _context.Events.Add(eventDto);
+            _context.SaveChanges();
+
+            return CreatedAtAction(nameof(GetEventById), new { id = eventDto.Id }, eventDto);
+        }
     }
 
     [HttpPut("{id}")]
@@ -113,9 +115,11 @@ public class EventsController : ControllerBase
     public IActionResult DeleteEvent(int id)
     {
         var eventEntity = _context.Events
-            .Include(e => e.Tasks)
-            .Include(e => e.Teams)
-            .FirstOrDefault(e => e.Id == id);
+        .Include(e => e.Tasks)
+            .ThenInclude(t => t.Subtasks)
+        .Include(e => e.Teams)
+            .ThenInclude(t => t.Guides)
+        .FirstOrDefault(e => e.Id == id);
 
         if (eventEntity == null)
         {
@@ -146,6 +150,33 @@ public class EventsController : ControllerBase
         }
 
         _context.Events.Remove(eventEntity);
+        _context.SaveChanges();
+
+        return NoContent();
+    }
+
+    [HttpPut("update-state")]
+    public IActionResult UpdateEventState()
+    {
+        var now = DateTime.UtcNow;
+
+        var eventsToUpdate = _context.Events
+            .Where(e => (e.StartDate < now && e.EndDate > now && e.State == EventStatus.Created) ||
+                        (e.EndDate < now && e.State != EventStatus.Closed))
+            .ToList();
+
+        foreach (var eventEntity in eventsToUpdate)
+        {
+            if (eventEntity.StartDate < now && eventEntity.EndDate > now && eventEntity.State == EventStatus.Created)
+            {
+                eventEntity.State = EventStatus.Started;
+            }
+            else if (eventEntity.EndDate < now && eventEntity.State != EventStatus.Closed)
+            {
+                eventEntity.State = EventStatus.Closed;
+            }
+        }
+
         _context.SaveChanges();
 
         return NoContent();

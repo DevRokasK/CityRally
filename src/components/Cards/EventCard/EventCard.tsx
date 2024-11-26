@@ -19,19 +19,19 @@ export interface IEventCardProps {
 
 export const EventCard = observer((props: IEventCardProps) => {
     const { event } = props;
-    const { title, startDate, endDate, primaryColor, secondaryColor } = event;
+    const { title, startDate, endDate/* , primaryColor, secondaryColor */ } = event;
     const teams = event.teamCount ? event.teamCount : event.teamStore.teams.length;
 
     let statusString: string = event.getStateString();
 
     var colors = `linear-gradient(to right, #8B1E3F, #3C153B)`;
 
-    if (primaryColor) {
+    /* if (primaryColor) {
         colors = `linear-gradient(to right, ${primaryColor}, ${primaryColor})`;
         if (secondaryColor) {
             colors = `linear-gradient(to right, ${primaryColor}, ${secondaryColor})`;
         }
-    }
+    } */
 
     const startTime = dateToStringHnM(startDate);
     const endTime = dateToStringHnM(endDate);
@@ -69,7 +69,7 @@ export const EventCard = observer((props: IEventCardProps) => {
             style={{ textDecoration: "none" }}
         >
             <Box sx={{ minWidth: 440, maxWidth: 440 }} className="eventCard">
-                <Card variant="outlined" style={{ backgroundColor: primaryColor, backgroundImage: colors, border: "none" }}>{card}</Card>
+                <Card variant="outlined" style={{ backgroundColor: "#8B1E3F", backgroundImage: colors, border: "none" }}>{card}</Card>
             </Box >
         </Link>
     );

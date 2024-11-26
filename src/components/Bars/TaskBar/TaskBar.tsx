@@ -21,13 +21,30 @@ export const TaskBar = observer((props: ITaskBarProps) => {
     const { title, addButtonText, tasks, showButtons } = props;
 
     const [isModalOpen, setModalOpen] = useState(false);
-    const handleOpen = () => setModalOpen(true);
-    const handleClose = () => setModalOpen(false);
+    const [selectedTask, setSelectedTask] = useState<Task | null>(null);
+
+    const handleOpen = (task: Task) => {
+        setSelectedTask(task);
+        setModalOpen(true);
+    };
+
+    const handleClose = () => {
+        setModalOpen(false);
+        setSelectedTask(null);
+    };
+
+    const handleSave = () => {
+
+    };
+
+    const handleCreate = () => {
+
+    };
 
     const taskCards = tasks.map(task => {
         return (
-            <div onClick={handleOpen}>
-                <TaskCard key={task.id} task={task} showDrag={showButtons} />
+            <div onClick={() => handleOpen(task)} key={task.id}>
+                <TaskCard task={task} showDrag={showButtons} />
             </div>
         )
     });
@@ -38,7 +55,7 @@ export const TaskBar = observer((props: ITaskBarProps) => {
                 <p className="taskBarTitle">{title}</p>
                 <div className="taskBarContent">
                     {showButtons &&
-                        <div onClick={handleOpen}>
+                        <div onClick={() => handleOpen(new Task({ id: 0, isMain: title === "Main tasks", isEnabled: true, subtasks: [] }))}>
                             <AddCard title={addButtonText} />
                         </div>
                     }
@@ -46,7 +63,7 @@ export const TaskBar = observer((props: ITaskBarProps) => {
                 </div>
             </div>
             {isModalOpen &&
-                <TaskModal isOpen={isModalOpen} onClose={handleClose} />
+                <TaskModal isOpen={isModalOpen} onSave={handleSave} onCreate={handleCreate} onClose={handleClose} task={selectedTask} />
             }
         </React.Fragment>
     );

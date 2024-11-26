@@ -20,14 +20,12 @@ public class GuidesController : ControllerBase
     [HttpPut("{id}")]
     public IActionResult UpdateGuide(int id, [FromBody] Guide updateGuide)
     {
-        // Update existing guide
         return NoContent();
     }
 
     [HttpDelete("{id}")]
     public IActionResult DeleteGuide(int id)
     {
-        // Delete guide by id
         return NoContent();
     }
 }

@@ -9,94 +9,89 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import TextField from "@mui/material/TextField";
 
-import { Task } from "../../models/Task";
-import { Subtask } from "../../models/Subtask";
+import { Team } from "../../models/Team";
+import { Guide, GuideStatus } from "../../models/Guide";
 import { ColorButton, OutlinedButton } from "../BaseComponents/Buttons";
 
-export interface ITaskModal {
+export interface IGuideModal {
     isOpen: boolean;
     onSave: () => void;
     onCreate: () => void;
     onClose: () => void;
-    task: Task;
+    team: Team;
 };
 
-export const TaskModal = observer((props: ITaskModal) => {
-    const { isOpen, onSave, onCreate, onClose, task } = props;
-    const { subtasks, isMain } = task;
+export const GuideModal = observer((props: IGuideModal) => {
+    const { isOpen, onSave, onCreate, onClose, team } = props;
+    const { guides, title } = team;
 
     const [inputKey, setInputKey] = React.useState<number>(0);
     const [modalKey, setModalKey] = React.useState<number>(50);
 
-    const [initialSubtasks] = React.useState<Subtask[]>([...subtasks]);
-    const [newTask, setNewTask] = React.useState<Subtask>(
-        new Subtask({
+    const [initialGuides] = React.useState<Guide[]>([...guides]);
+    const [newGuide, setNewGuide] = React.useState<Guide>(
+        new Guide({
             id: 0,
-            title: "",
-            points: 0,
-            isTimed: false,
-            startDate: new Date(),
-            endDate: new Date()
+            name: "",
+            email: "",
+            status: GuideStatus.Invited
         })
     );
 
     const onAdd = () => {
-        if (newTask.title === "" || newTask.points <= 0) {
+        if (newGuide.name === "" || newGuide.email === "") {
             return;
         }
 
-        const updatedSubtasks = [...subtasks, newTask];
-        task.setSubtasks(updatedSubtasks);
-        setNewTask(new Subtask({
+        const updatedGuides = [...guides, newGuide];
+        team.setGuides(updatedGuides);
+        setNewGuide(new Guide({
             id: 0,
-            title: "",
-            points: 0,
-            isTimed: false,
-            startDate: new Date(),
-            endDate: new Date()
+            name: "",
+            email: "",
+            status: GuideStatus.Invited
         }));
 
         setInputKey(prevKey => prevKey + 1);
-    }
+    };
 
     const onDelete = (index: number) => {
-        task.removeSubtask(index);
+        team.removeGuide(index);
         setModalKey(prevKey => prevKey + 1);
     };
 
     const onCancel = () => {
-        task.setSubtasks(initialSubtasks);
+        team.setGuides(initialGuides);
         onClose();
     };
 
-    const subtaskContent = subtasks?.map((subtask, index) => {
+    const guideContent = guides?.map((guide, index) => {
         return (
             <div key={index} className="timeContainer">
                 <TextField
                     sx={{ width: "100%" }}
                     id="standard-basic"
-                    label="Task"
+                    label="Name"
                     variant="standard"
                     className='eventTitleEdit'
-                    defaultValue={subtask.title}
-                    onChange={(e) => subtask.setTitle(e.target.value)}
+                    defaultValue={guide.name}
+                    onChange={(e) => guide.setName(e.target.value)}
                 />
                 <TextField
-                    sx={{ width: "12%" }}
+                    sx={{ width: "100%" }}
                     id="standard-basic"
-                    label="Points"
+                    label="Email"
                     variant="standard"
                     className='eventTitleEdit'
-                    type="number"
-                    defaultValue={subtask.points}
-                    onChange={(e) => subtask.setPoints(+e.target.value)}
+                    defaultValue={guide.email}
+                    onChange={(e) => guide.setEmail(e.target.value)}
                 />
                 <IconButton aria-label="delete" onClick={() => onDelete(index)}>
                     <DeleteIcon className="iconColor" />
                 </IconButton>
             </div>
         );
-    });
+    })
 
     return (
         <Modal
@@ -108,10 +103,7 @@ export const TaskModal = observer((props: ITaskModal) => {
         >
             <div className="editEventSettings">
                 <div className="modalHeader">
-                    {isMain ?
-                        <Typography variant="h6" >Main Task information</Typography>
-                        :
-                        <Typography variant="h6" >Additional Task information</Typography>}
+                    <Typography variant="h6" >Task information</Typography>
                     <div className="rightSection">
                         <IconButton aria-label="close" onClick={onCancel}>
                             <CloseIcon className="iconColor" />
@@ -119,27 +111,35 @@ export const TaskModal = observer((props: ITaskModal) => {
                     </div>
                 </div>
                 <div>
-                    {subtaskContent}
+                    <TextField
+                        sx={{ width: "100%" }}
+                        id="standard-basic"
+                        label="Team title"
+                        variant="standard"
+                        className='eventTitleEdit'
+                        defaultValue={title}
+                        onChange={(e) => team.setTitle(e.target.value)}
+                    />
+                    {guideContent}
                     <div className="timeContainer">
                         <TextField
                             sx={{ width: "100%" }}
                             id="standard-basic"
-                            label="Task"
+                            label="Name"
                             variant="standard"
                             className='eventTitleEdit'
-                            defaultValue={newTask.title}
-                            onChange={(e) => newTask.setTitle(e.target.value)}
+                            defaultValue={newGuide.name}
+                            onChange={(e) => newGuide.setName(e.target.value)}
                             key={inputKey}
                         />
                         <TextField
-                            sx={{ width: "12%" }}
+                            sx={{ width: "100%" }}
                             id="standard-basic"
-                            label="Points"
+                            label="Email"
                             variant="standard"
                             className='eventTitleEdit'
-                            type="number"
-                            defaultValue={newTask.points}
-                            onChange={(e) => newTask.setPoints(+e.target.value)}
+                            defaultValue={newGuide.email}
+                            onChange={(e) => newGuide.setEmail(e.target.value)}
                             key={inputKey + 100}
                         />
                         <IconButton aria-label="Add" onClick={onAdd}>
@@ -148,7 +148,7 @@ export const TaskModal = observer((props: ITaskModal) => {
                     </div>
                 </div>
                 <div className="modalFooterButtons">
-                    {task.id === 0 ?
+                    {team.id === 0 ?
                         <ColorButton variant="contained" onClick={onCreate}>Create</ColorButton>
                         :
                         <ColorButton variant="contained" onClick={onSave}>Save</ColorButton>

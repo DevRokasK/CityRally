@@ -28,11 +28,4 @@ export class TaskStore extends BaseItem {
 
         return [mainTasks, additionalTasks];
     }
-
-    @action
-    public deepClone(): TaskStore {
-        const clone = new TaskStore();
-        clone.tasks = this.tasks.map(task => task.deepClone());
-        return clone;
-    }
 }

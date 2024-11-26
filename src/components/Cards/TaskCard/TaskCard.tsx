@@ -5,7 +5,7 @@ import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
-import DragHandleIcon from '@mui/icons-material/DragHandle';
+//import DragHandleIcon from '@mui/icons-material/DragHandle';
 
 import { Task } from "../../../models/Task";
 
@@ -15,7 +15,7 @@ export interface IEventCardProps {
 };
 
 export const TaskCard = observer((props: IEventCardProps) => {
-    const { task, showDrag } = props;
+    const { task, /* showDrag */ } = props;
     const { subtasks } = task;
 
     const cardContent = subtasks.map((subtask, index) => {
@@ -23,7 +23,7 @@ export const TaskCard = observer((props: IEventCardProps) => {
         return (
             <div
                 className="taskCardContent"
-                style={{ borderBottom: !isLast ? '1px solid rgba(0, 0, 0, 0.12);' : 'none' }}
+                style={{ borderBottom: !isLast ? '1px solid rgba(0, 0, 0, 0.12)' : 'none' }}
                 key={index}
             >
                 <Typography variant="body2" component="div" className="taskCardText" style={{ fontWeight: "bold" }}>
@@ -39,11 +39,11 @@ export const TaskCard = observer((props: IEventCardProps) => {
     const card = (
         <React.Fragment>
             <CardContent style={{ padding: 4 }} className="cardContent">
-                {showDrag &&
+                {/* {showDrag &&
                     <div className="dragButtonContainer">
                         <DragHandleIcon className="dragIcon" />
                     </div>
-                }
+                } */}
                 <div className="taskContent">
                     {cardContent}
                 </div>

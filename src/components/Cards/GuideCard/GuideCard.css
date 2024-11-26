@@ -9,7 +9,12 @@
 
 .guideCardContent {
     text-align: left;
-    margin-bottom: 6px;
+    padding-bottom: 6px;
     column-count: 2;
     column-gap: 32px;
+}
+
+.teamTitle {
+    text-align: left;
+    font-weight: bold;
 }

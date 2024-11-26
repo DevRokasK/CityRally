@@ -14,21 +14,18 @@ public class TeamsController : ControllerBase
     [HttpGet("{id}")]
     public ActionResult<Team> GetTeamById(int id)
     {
-        // Fetch team by id
         return Ok(new Team());
     }
 
     [HttpPost]
     public ActionResult<Team> CreateTeam([FromBody] Team newTeam)
     {
-        // Create a new team
         return CreatedAtAction(nameof(GetTeamById), new { id = newTeam.Id }, newTeam);
     }
 
     [HttpPut("{id}")]
     public IActionResult UpdateTeam(int id, [FromBody] Team updatedTeam)
     {
-        // Update existing team
         if (id != updatedTeam.Id)
         {
             return BadRequest("Team ID mismatch");
@@ -39,7 +36,6 @@ public class TeamsController : ControllerBase
     [HttpDelete("{id}")]
     public IActionResult DeleteTeam(int id)
     {
-        // Delete team by id
         return NoContent();
     }
 }

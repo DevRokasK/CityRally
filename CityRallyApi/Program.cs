@@ -11,6 +11,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseMySQL(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+//builder.Services.AddHostedService<EventStateUpdaterService>();
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>

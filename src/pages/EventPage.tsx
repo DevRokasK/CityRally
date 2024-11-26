@@ -8,7 +8,7 @@ import "../styles/App.css";
 import { CommandBarEvent } from '../components/CommandBar/CommandBarEvent';
 import { EventStore } from '../stores/EventStore';
 import { TaskBar } from '../components/Bars/TaskBar/TaskBar';
-import { GuideBar } from '../components/Bars/GuideBar/GuideBar';
+import { TeamBar } from '../components/Bars/TeamBar/TeamBar';
 import { Event, EventStatus } from '../models/Event';
 import CircularProgress from '@mui/material/CircularProgress';
 
@@ -40,13 +40,14 @@ export const EventPage = observer((props: IEventProps) => {
         </div>);
     }
 
+    eventStore.setEvent(event);
     const { taskStore: tasks, teamStore: teams } = event;
     const [mainTasks, additionalTasks] = tasks.sortTasks();
     const showButtons = event.state !== EventStatus.Closed;
 
     return (
         <div>
-            <CommandBarEvent eventStore={eventStore} event={event} />
+            <CommandBarEvent eventStore={eventStore}/>
             {eventStore?.loading || event?.loading ?
                 <div>
                     <CircularProgress color="secondary" />
@@ -65,9 +66,9 @@ export const EventPage = observer((props: IEventProps) => {
                         tasks={additionalTasks}
                         showButtons={showButtons}
                     />
-                    <GuideBar
-                        title="Guides"
-                        addButtonText="Add guides"
+                    <TeamBar
+                        title="Teams"
+                        addButtonText="Add team"
                         teamStore={teams}
                         showButtons={showButtons}
                     />

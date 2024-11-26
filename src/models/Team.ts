@@ -1,6 +1,6 @@
-import { action, observable } from "mobx";
+import { action, observable, runInAction } from "mobx";
 import { BaseItem } from "./BaseItem";
-import { Guide, GuideStatus } from "./Guide";
+import { Guide } from "./Guide";
 
 export interface ITeam {
     id: number;
@@ -18,47 +18,24 @@ export class Team extends BaseItem implements ITeam {
 
         this.id = data.id;
         this.title = data.title;
-        this.guides = [];
-
-        this.getGuides();
+        this.guides = data.guides.map(guide => new Guide(guide));
     }
 
     @action
-    public getGuideCount() {
-        return this.guides.length;
+    public setTitle(newTitle: string) {
+        this.title = newTitle;
     }
 
     @action
-    public getGuides(): void {
-        this.guides = [];
-
-        const guide1 = new Guide({
-            id: 0,
-            name: "Vardenis",
-            email: "vadenis@email.com",
-            status: GuideStatus.Invited
-        });
-        const guide2 = new Guide({
-            id: 0,
-            name: "Pavardenis",
-            email: "Pavardenis@email.com",
-            status: GuideStatus.Accepted
-        });
-        const guide3 = new Guide({
-            id: 0,
-            name: "Gigachadius",
-            email: "Gigachadius@email.com",
-            status: GuideStatus.Invited
-        });
-
-        this.guides.push(guide1, guide2, guide3);
+    public setGuides(guides: Guide[]) {
+        this.guides = guides;
     }
 
     @action
-    public deepClone(): Team {
-        return new Team({
-            id: this.id,
-            title: this.title
-        });
+    public removeGuide(index: number) {
+        runInAction(() => {
+            this.guides.splice(index, 1);
+            this.setGuides(this.guides);
+        })
     }
 }

@@ -1,4 +1,4 @@
-import { observable } from "mobx";
+import { action, observable, runInAction } from "mobx";
 import { BaseItem } from "./BaseItem";
 import { Subtask } from "./Subtask";
 
@@ -21,15 +21,19 @@ export class Task extends BaseItem implements ITask {
         this.id = data.id;
         this.isMain = data.isMain;
         this.isEnabled = data.isEnabled;
-        this.subtasks = data.subtasks;
+        this.subtasks = data.subtasks.map(subtask => new Subtask(subtask));
     }
 
-    public deepClone(): Task {
-        return new Task({
-            id: this.id,
-            isMain: this.isMain,
-            isEnabled: this.isEnabled,
-            subtasks: this.subtasks.map(subtask => subtask.deepClone())
+    @action
+    public setSubtasks(subtasks: Subtask[]) {
+        this.subtasks = subtasks;
+    }
+
+    @action
+    public removeSubtask(index: number) {
+        return runInAction(() => {
+            this.subtasks.splice(index, 1);
+            this.setSubtasks(this.subtasks);
         });
     }
 }

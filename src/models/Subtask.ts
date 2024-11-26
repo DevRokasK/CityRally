@@ -25,20 +25,17 @@ export class Subtask extends BaseItem implements ISubtask {
         this.title = data.title;
         this.points = data.points;
         this.isTimed = data.isTimed;
-
-        if (this.isTimed) {
-            this.startDate = data.startDate;
-            this.endDate = data.endDate;
-        }
+        this.startDate = data.startDate;
+        this.endDate = data.endDate;
     }
 
     @action
-    public deepClone(): Subtask {
-        return new Subtask({
-            id: this.id,
-            title: this.title,
-            points: this.points,
-            isTimed: this.isTimed
-        });
+    public setTitle(newTitle: string): void {
+        this.title = newTitle;
+    }
+
+    @action
+    public setPoints(newPoints: number): void {
+        this.points = newPoints;
     }
 }

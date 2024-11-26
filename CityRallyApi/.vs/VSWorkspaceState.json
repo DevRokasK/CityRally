@@ -4,8 +4,9 @@
     "\\Controllers",
     "\\Data",
     "\\Models",
-    "\\Properties"
+    "\\Properties",
+    "\\Services"
   ],
-  "SelectedNode": "\\Controllers\\EventsController.cs",
+  "SelectedNode": "\\Models\\Event.cs",
   "PreviewInSolutionExplorer": false
 }
