@@ -52,18 +52,8 @@ export class Event extends BaseItem implements IEvent {
         this.primaryColor = data.primaryColor;
         this.secondaryColor = data.secondaryColor;
         this.state = data.state;
-
-        if (data.taskStore) {
-            this.taskStore = data.taskStore;
-        } else {
-            this.taskStore = new TaskStore();
-        }
-
-        if (data.teamStore) {
-            this.teamStore = data.teamStore;
-        } else {
-            this.teamStore = new TeamStore();
-        }
+        this.taskStore = new TaskStore();
+        this.teamStore = new TeamStore();
 
         if (data.teamCount) {
             this.teamCount = data.teamCount;

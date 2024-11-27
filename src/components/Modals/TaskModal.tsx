@@ -18,11 +18,12 @@ export interface ITaskModal {
     onSave: () => void;
     onCreate: () => void;
     onClose: () => void;
+    onTeamDelete: () => void;
     task: Task;
 };
 
 export const TaskModal = observer((props: ITaskModal) => {
-    const { isOpen, onSave, onCreate, onClose, task } = props;
+    const { isOpen, onSave, onCreate, onClose, onTeamDelete, task } = props;
     const { subtasks, isMain } = task;
 
     const [inputKey, setInputKey] = React.useState<number>(0);
@@ -69,6 +70,16 @@ export const TaskModal = observer((props: ITaskModal) => {
         onClose();
     };
 
+    const onSaveTask = () => {
+        onAdd();
+        onSave();
+    };
+
+    const onCreateTask = () => {
+        onAdd();
+        onCreate();
+    };
+
     const subtaskContent = subtasks?.map((subtask, index) => {
         return (
             <div key={index} className="timeContainer">
@@ -113,6 +124,9 @@ export const TaskModal = observer((props: ITaskModal) => {
                         :
                         <Typography variant="h6" >Additional Task information</Typography>}
                     <div className="rightSection">
+                        {task.id !== 0 &&
+                            <ColorButton variant="contained" onClick={onTeamDelete}>Delete</ColorButton>
+                        }
                         <IconButton aria-label="close" onClick={onCancel}>
                             <CloseIcon className="iconColor" />
                         </IconButton>
@@ -149,9 +163,9 @@ export const TaskModal = observer((props: ITaskModal) => {
                 </div>
                 <div className="modalFooterButtons">
                     {task.id === 0 ?
-                        <ColorButton variant="contained" onClick={onCreate}>Create</ColorButton>
+                        <ColorButton variant="contained" onClick={onCreateTask}>Create</ColorButton>
                         :
-                        <ColorButton variant="contained" onClick={onSave}>Save</ColorButton>
+                        <ColorButton variant="contained" onClick={onSaveTask}>Save</ColorButton>
                     }
                     <OutlinedButton variant="outlined" onClick={onCancel}>Cancel</OutlinedButton>
                 </div>

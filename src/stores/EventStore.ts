@@ -205,11 +205,11 @@ export class EventStore extends BaseItem {
                 primaryColor: this.selectedEvent.primaryColor,
                 secondaryColor: this.selectedEvent.secondaryColor,
                 state: eventStatus ? eventStatus : this.selectedEvent.state,
-                tasks: this.selectedEvent.taskStore.tasks.map(task => ({
+                tasks: this.selectedEvent.taskStore.tasks?.map(task => ({
                     id: task.id,
                     isMain: task.isMain,
                     isEnabled: task.isEnabled,
-                    subtasks: task.subtasks.map(subtask => ({
+                    subtasks: task.subtasks?.map(subtask => ({
                         id: subtask.id,
                         title: subtask.title,
                         points: subtask.points,
@@ -218,10 +218,10 @@ export class EventStore extends BaseItem {
                         endDate: subtask.endDate,
                     })),
                 })),
-                teams: this.selectedEvent.teamStore.teams.map(team => ({
+                teams: this.selectedEvent.teamStore.teams?.map(team => ({
                     id: team.id,
                     title: team.title,
-                    guides: team.guides.map(guide => ({
+                    guides: team.guides?.map(guide => ({
                         id: guide.id,
                         name: guide.name,
                         email: guide.email,
@@ -230,22 +230,16 @@ export class EventStore extends BaseItem {
                 })),
             };
 
-            const response = await axios.post(`http://localhost:5000/api/Events/${this.selectedEvent.id}`, eventData);
+            const response = await axios.put(`http://localhost:5000/api/Events/${this.selectedEvent.id}`, eventData);
 
-            if (response.status === 201) {
-                const savedEvent = response.data;
-                runInAction(() => {
-                    this.events.push(new Event(savedEvent));
-                    this.selectedEvent = null;
-                });
-                console.log("Event created successfully.");
+            if (response.status === 204) {
                 return true;
             } else {
-                console.error("Failed to create event:", response);
+                console.error("Failed to update event:", response);
                 return false;
             }
         } catch (error) {
-            console.error("Error saving new event:", error);
+            console.error("Error updating new event:", error);
             return false;
         }
     }
@@ -276,8 +270,7 @@ export class EventStore extends BaseItem {
         try {
             const response = await axios.delete(`http://localhost:5000/api/Events/${this.selectedEvent.id}`);
 
-            if (response.status === 200) {
-                console.log("Event deleted successfully.");
+            if (response.status === 204) {
                 return true;
             } else {
                 console.error("Failed to delete event:", response);
@@ -308,7 +301,6 @@ export class EventStore extends BaseItem {
             });
 
             if (response.status === 204) {
-                console.log("Event updated successfully.");
                 return true;
             } else {
                 console.error("Failed to update event:", response);

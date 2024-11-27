@@ -9,16 +9,23 @@ import { Task } from "../../../models/Task";
 import { TaskCard } from "../../Cards/TaskCard/TaskCard";
 import { AddCard } from "../../Cards/AddCard/AddCard";
 import { TaskModal } from '../../Modals/TaskModal';
+import { TaskStore } from '../../../stores/TaskStore';
+import CircularProgress from '@mui/material/CircularProgress';
 
 export interface ITaskBarProps {
     title: string;
+    eventId: number;
     addButtonText: string;
+    taskStore: TaskStore;
     tasks: Task[];
     showButtons: boolean;
+    isLoading: boolean;
+    onTaskCreated?: () => void;
 }
 
 export const TaskBar = observer((props: ITaskBarProps) => {
-    const { title, addButtonText, tasks, showButtons } = props;
+    const { title, eventId, addButtonText, tasks, taskStore, showButtons, isLoading, onTaskCreated } = props;
+    const { createTask, updateTask, deleteTask } = taskStore;
 
     const [isModalOpen, setModalOpen] = useState(false);
     const [selectedTask, setSelectedTask] = useState<Task | null>(null);
@@ -33,13 +40,29 @@ export const TaskBar = observer((props: ITaskBarProps) => {
         setSelectedTask(null);
     };
 
-    const handleSave = () => {
-
+    const handleSave = async () => {
+        const success = await updateTask(eventId, selectedTask);
+        if (success && onTaskCreated) {
+            onTaskCreated();
+        }
+        handleClose();
     };
 
-    const handleCreate = () => {
-
+    const handleCreate = async () => {
+        const success = await createTask(eventId, selectedTask);
+        if (success && onTaskCreated) {
+            onTaskCreated();
+        }
+        handleClose();
     };
+
+    const handleDelete = async () => {
+        const success = await deleteTask(selectedTask);
+        if (success && onTaskCreated) {
+            onTaskCreated();
+        }
+        handleClose();
+    }
 
     const taskCards = tasks.map(task => {
         return (
@@ -52,6 +75,11 @@ export const TaskBar = observer((props: ITaskBarProps) => {
     return (
         <React.Fragment>
             <div className="taskBar">
+                {isLoading &&
+                    <div>
+                        <CircularProgress color="secondary" />
+                    </div>
+                }
                 <p className="taskBarTitle">{title}</p>
                 <div className="taskBarContent">
                     {showButtons &&
@@ -63,7 +91,14 @@ export const TaskBar = observer((props: ITaskBarProps) => {
                 </div>
             </div>
             {isModalOpen &&
-                <TaskModal isOpen={isModalOpen} onSave={handleSave} onCreate={handleCreate} onClose={handleClose} task={selectedTask} />
+                <TaskModal
+                    isOpen={isModalOpen}
+                    onSave={handleSave}
+                    onCreate={handleCreate}
+                    onClose={handleClose}
+                    onTeamDelete={handleDelete}
+                    task={selectedTask}
+                />
             }
         </React.Fragment>
     );

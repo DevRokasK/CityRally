@@ -9,6 +9,7 @@ import { Login } from './pages/Login';
 import { Header } from './components/Header/Header';
 import { Footer } from './components/Footer/Footer';
 import { RootStore } from './stores/RootStore';
+import { GuideEventPage } from './pages/GuideEventPage';
 
 
 const App = observer(() => {
@@ -23,6 +24,7 @@ const App = observer(() => {
         <Routes>
           <Route path='/' element={<Home eventStore={store.eventStore} />} />
           <Route path='/Event/:id' element={<EventPage eventStore={store.eventStore} />} />
+          <Route path='/Guide/Event:id' element={<GuideEventPage eventStore={store.eventStore} />} />
           <Route path='/Login' element={<Login />} />
         </Routes>
       </main>

@@ -171,7 +171,7 @@ public class EventsController : ControllerBase
             {
                 eventEntity.State = EventStatus.Started;
             }
-            else if (eventEntity.EndDate < now && eventEntity.State != EventStatus.Closed)
+            else if (eventEntity.EndDate < now && (eventEntity.State != EventStatus.Closed && eventEntity.State != EventStatus.Draft))
             {
                 eventEntity.State = EventStatus.Closed;
             }

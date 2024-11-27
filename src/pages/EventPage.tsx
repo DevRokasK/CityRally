@@ -22,6 +22,13 @@ export const EventPage = observer((props: IEventProps) => {
 
     const [event, setEvent] = React.useState<Event | null>(null);
 
+    const refreshEvent = async () => {
+        const selectedEvent = await eventStore.selectEvent(id);
+        if (selectedEvent) {
+            setEvent(selectedEvent);
+        }
+    };
+
     React.useEffect(() => {
         (async () => {
             const selectedEvent = await eventStore.selectEvent(id);
@@ -41,13 +48,13 @@ export const EventPage = observer((props: IEventProps) => {
     }
 
     eventStore.setEvent(event);
-    const { taskStore: tasks, teamStore: teams } = event;
-    const [mainTasks, additionalTasks] = tasks.sortTasks();
+    const { taskStore, teamStore } = event;
+    const [mainTasks, additionalTasks] = taskStore.sortTasks();
     const showButtons = event.state !== EventStatus.Closed;
 
     return (
         <div>
-            <CommandBarEvent eventStore={eventStore}/>
+            <CommandBarEvent eventStore={eventStore} />
             {eventStore?.loading || event?.loading ?
                 <div>
                     <CircularProgress color="secondary" />
@@ -57,20 +64,31 @@ export const EventPage = observer((props: IEventProps) => {
                     <TaskBar
                         title="Main tasks"
                         addButtonText="Add main task"
+                        eventId={event.id}
                         tasks={mainTasks}
+                        taskStore={taskStore}
                         showButtons={showButtons}
+                        isLoading={taskStore.loading}
+                        onTaskCreated={refreshEvent}
                     />
                     <TaskBar
                         title="Additional tasks"
                         addButtonText="Add additional task"
+                        eventId={event.id}
                         tasks={additionalTasks}
+                        taskStore={taskStore}
                         showButtons={showButtons}
+                        isLoading={taskStore.loading}
+                        onTaskCreated={refreshEvent}
                     />
                     <TeamBar
                         title="Teams"
                         addButtonText="Add team"
-                        teamStore={teams}
+                        eventId={event.id}
+                        teamStore={teamStore}
                         showButtons={showButtons}
+                        isLoading={teamStore.loading}
+                        onTeamCreated={refreshEvent}
                     />
                 </div>
             }
