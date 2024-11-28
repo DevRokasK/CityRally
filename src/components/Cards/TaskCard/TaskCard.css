@@ -13,6 +13,24 @@
     margin-bottom: 6px;
 }
 
+.TeamtaskCardContent {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+    padding-bottom: 6px;
+    column-count: 2;
+    column-gap: 32px;
+}
+
+.taskTextContainer {
+    text-align: left;
+}
+
+.taskCheckbox {
+    margin-left: auto;  /* Align checkbox to the right */
+}
+
 .taskCardText {
     padding-left: 8px;
 }

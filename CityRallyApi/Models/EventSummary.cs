@@ -29,4 +29,6 @@ public class EventSummary
     public EventStatus State { get; set; }
 
     public int TeamCount { get; set; }
+
+    public List<int> TeamIds { get; set; }
 }

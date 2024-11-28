@@ -11,6 +11,7 @@ import { AddCard } from "../../Cards/AddCard/AddCard";
 import { TaskModal } from '../../Modals/TaskModal';
 import { TaskStore } from '../../../stores/TaskStore';
 import CircularProgress from '@mui/material/CircularProgress';
+import { UserStore } from '../../../stores/UserStore';
 
 export interface ITaskBarProps {
     title: string;
@@ -20,11 +21,12 @@ export interface ITaskBarProps {
     tasks: Task[];
     showButtons: boolean;
     isLoading: boolean;
+    userStore: UserStore;
     onTaskCreated?: () => void;
 }
 
 export const TaskBar = observer((props: ITaskBarProps) => {
-    const { title, eventId, addButtonText, tasks, taskStore, showButtons, isLoading, onTaskCreated } = props;
+    const { title, eventId, addButtonText, tasks, taskStore, showButtons, isLoading, userStore, onTaskCreated } = props;
     const { createTask, updateTask, deleteTask } = taskStore;
 
     const [isModalOpen, setModalOpen] = useState(false);
@@ -65,11 +67,15 @@ export const TaskBar = observer((props: ITaskBarProps) => {
     }
 
     const taskCards = tasks.map(task => {
-        return (
-            <div onClick={() => handleOpen(task)} key={task.id}>
-                <TaskCard task={task} showDrag={showButtons} />
-            </div>
-        )
+        if (userStore.isAdmin) {
+            return (
+                <div onClick={() => handleOpen(task)} key={task.id}>
+                    <TaskCard task={task} showDrag={showButtons} userStore={userStore} />
+                </div>
+            );
+        }
+
+        return (<TaskCard task={task} showDrag={showButtons} userStore={userStore} />);
     });
 
     return (
@@ -90,7 +96,7 @@ export const TaskBar = observer((props: ITaskBarProps) => {
                     {taskCards}
                 </div>
             </div>
-            {isModalOpen &&
+            {isModalOpen && userStore.isAdmin &&
                 <TaskModal
                     isOpen={isModalOpen}
                     onSave={handleSave}

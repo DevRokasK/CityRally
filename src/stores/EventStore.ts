@@ -9,7 +9,7 @@ import { Task } from "../models/Task";
 import { Team } from "../models/Team";
 
 export class EventStore extends BaseItem {
-    public rootStore: RootStore;
+    readonly rootStore: RootStore;
 
     @observable public events: Event[];
 
@@ -59,9 +59,14 @@ export class EventStore extends BaseItem {
 
     @action
     public sortEvents(): [Event[], Event[], Event[]] {
-        const currentEvents: Event[] = [];
+        let currentEvents: Event[] = [];
         const draftEvents: Event[] = [];
         const pastEvents: Event[] = [];
+
+        if (!this.rootStore.userStore.isAdmin) {
+            currentEvents = this.sortTeamEvents();
+            return [currentEvents, draftEvents, pastEvents];
+        }
 
         this.events.forEach(event => {
             switch (event.state) {
@@ -82,6 +87,22 @@ export class EventStore extends BaseItem {
         });
 
         return [currentEvents, draftEvents, pastEvents];
+    }
+
+    @action
+    public sortTeamEvents(): Event[] {
+        const teamId = this.rootStore.userStore.teamId;
+        const teamEvents: Event[] = [];
+
+        this.events.forEach(event => {
+            if (event.state === EventStatus.Started || event.state === EventStatus.Created) {
+                if (event.teamIds?.find(id => id === teamId)) {
+                    teamEvents.push(event);
+                }
+            }
+        });
+
+        return teamEvents;
     }
 
     @action

@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { observer } from 'mobx-react-lite';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import "../styles/App.css";
 
@@ -18,6 +18,13 @@ export interface IEventProps {
 
 export const EventPage = observer((props: IEventProps) => {
     const { eventStore } = props;
+    const userStore = eventStore.rootStore.userStore;
+
+    if (!userStore.isAdmin) {
+        const navigate = useNavigate();
+        navigate('/');
+    }
+
     const { id } = useParams();
 
     const [event, setEvent] = React.useState<Event | null>(null);
@@ -69,6 +76,7 @@ export const EventPage = observer((props: IEventProps) => {
                         taskStore={taskStore}
                         showButtons={showButtons}
                         isLoading={taskStore.loading}
+                        userStore={userStore}
                         onTaskCreated={refreshEvent}
                     />
                     <TaskBar
@@ -79,6 +87,7 @@ export const EventPage = observer((props: IEventProps) => {
                         taskStore={taskStore}
                         showButtons={showButtons}
                         isLoading={taskStore.loading}
+                        userStore={userStore}
                         onTaskCreated={refreshEvent}
                     />
                     <TeamBar

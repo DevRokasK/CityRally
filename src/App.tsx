@@ -24,7 +24,7 @@ const App = observer(() => {
         <Routes>
           <Route path='/' element={<Home eventStore={store.eventStore} />} />
           <Route path='/Event/:id' element={<EventPage eventStore={store.eventStore} />} />
-          <Route path='/Guide/Event:id' element={<GuideEventPage eventStore={store.eventStore} />} />
+          <Route path='/Guide/Event/:id' element={<GuideEventPage eventStore={store.eventStore} />} />
           <Route path='/Login' element={<Login />} />
         </Routes>
       </main>

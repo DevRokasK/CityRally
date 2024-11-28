@@ -62,3 +62,17 @@
     display: flex;
     gap: 16px;
 }
+
+.teamEventTitle {
+    font-weight: bold;
+    display: inline-block;
+    align-self: center;
+    padding-right: 10px;
+}
+
+.teamName {
+    display: inline-block;
+    align-self: center;
+    padding-left: 10px;
+    border-left: 1px solid #cfcfcf;
+}

@@ -8,17 +8,18 @@ export interface IEventBarProps {
     title: string;
     events: Event[];
     isBorderless: boolean;
+    isAdmin: boolean;
 }
 
 export const EventBar = observer((props: IEventBarProps) => {
-    const { title, events, isBorderless } = props;
+    const { title, events, isBorderless, isAdmin } = props;
 
     if (events.length === 0) {
         return null;
     }
 
     const eventCards = events.map(event => {
-        return <EventCard key={event.id} event={event} />;
+        return <EventCard key={event.id} event={event} isAdmin={isAdmin} />;
     });
 
     return (

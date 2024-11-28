@@ -16,6 +16,7 @@ export interface IHomeProps {
 
 export const Home = observer((props: IHomeProps) => {
     const { eventStore } = props;
+    const idAdmin = eventStore.rootStore.userStore.isAdmin;
     const { loading } = eventStore;
 
     React.useEffect(() => {
@@ -28,16 +29,22 @@ export const Home = observer((props: IHomeProps) => {
 
     return (
         <div>
-            <CommandBarHome />
+            {idAdmin &&
+                <CommandBarHome />
+            }
             {loading ?
                 <div>
                     <CircularProgress color="secondary" />
                 </div>
                 :
                 <div className="events">
-                    <EventBar title={"Current events"} events={currentEvents} isBorderless={false} />
-                    <EventBar title={"Draft events"} events={draftEvents} isBorderless={false} />
-                    <EventBar title={"Past events"} events={pastEvents} isBorderless={true} />
+                    <EventBar title={"Current events"} events={currentEvents} isBorderless={false} isAdmin={idAdmin} />
+                    {idAdmin &&
+                        <React.Fragment>
+                            <EventBar title={"Draft events"} events={draftEvents} isBorderless={false} isAdmin={idAdmin} />
+                            <EventBar title={"Past events"} events={pastEvents} isBorderless={true} isAdmin={idAdmin} />
+                        </React.Fragment>
+                    }
                 </div>
             }
 

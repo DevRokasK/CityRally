@@ -26,6 +26,7 @@ export interface IEvent {
     taskStore?: TaskStore;
     teamStore?: TeamStore;
     teamCount?: number;
+    teamIds?: number[];
 }
 
 export class Event extends BaseItem implements IEvent {
@@ -40,6 +41,7 @@ export class Event extends BaseItem implements IEvent {
     @observable public taskStore: TaskStore;
     @observable public teamStore: TeamStore;
     @observable public teamCount: number;
+    @observable public teamIds?: number[];
 
     public constructor(data: IEvent) {
         super();
@@ -57,6 +59,10 @@ export class Event extends BaseItem implements IEvent {
 
         if (data.teamCount) {
             this.teamCount = data.teamCount;
+        }
+
+        if (data.teamIds) {
+            this.teamIds = data.teamIds;
         }
     }
 

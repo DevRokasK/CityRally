@@ -15,10 +15,11 @@ import { dateToStringHnM } from "../../../Helpers";
 
 export interface IEventCardProps {
     event: Event;
+    isAdmin: boolean;
 };
 
 export const EventCard = observer((props: IEventCardProps) => {
-    const { event } = props;
+    const { event, isAdmin } = props;
     const { title, startDate, endDate/* , primaryColor, secondaryColor */ } = event;
     const teams = event.teamCount ? event.teamCount : event.teamStore.teams.length;
 
@@ -60,10 +61,26 @@ export const EventCard = observer((props: IEventCardProps) => {
         </React.Fragment>
     );
 
+    if (isAdmin) {
+        return (
+            <Link
+                to={{
+                    pathname: `/Event/${event.id}`,
+                    state: { event }
+                } as any}
+                style={{ textDecoration: "none" }}
+            >
+                <Box sx={{ minWidth: 440, maxWidth: 440 }} className="eventCard">
+                    <Card variant="outlined" style={{ backgroundColor: "#8B1E3F", backgroundImage: colors, border: "none" }}>{card}</Card>
+                </Box >
+            </Link>
+        );
+    }
+
     return (
         <Link
             to={{
-                pathname: `/Event/${event.id}`,
+                pathname: `/Guide/Event/${event.id}`,
                 state: { event }
             } as any}
             style={{ textDecoration: "none" }}

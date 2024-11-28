@@ -18,6 +18,7 @@ public class EventsController : ControllerBase
     public ActionResult<List<EventSummary>> GetAllEventSummaries()
     {
         var eventEntities = _context.Events
+            .Include(e => e.Teams)
             .Select(e => new EventSummary
             {
                 Id = e.Id,
@@ -28,7 +29,8 @@ public class EventsController : ControllerBase
                 PrimaryColor = e.PrimaryColor,
                 SecondaryColor = e.SecondaryColor,
                 State = e.State,
-                TeamCount = _context.Teams.Count(t => t.EventId == e.Id)
+                TeamCount = e.Teams.Count(),
+                TeamIds = e.Teams.Select(t => t.Id).ToList()
             })
             .ToList();
 
