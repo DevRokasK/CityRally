@@ -9,6 +9,37 @@ body {
 .events {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  height: 720px;
+  height: 800px;
   margin-top: 16px;
+}
+
+.login {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  height: 840px;
+  background-color: #A78BE3;
+  background-image: linear-gradient(to right, #A78BE3, #D59330);
+  border-top: 2px solid #414141;
+  justify-items: center;
+  align-items: center;
+}
+
+.loginContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  background-color: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  width: 80%;
+  max-width: 400px;
+  height: 20%;
+  max-height: 200px;
+  align-items: center;
+}
+
+.loginButton {
+  flex-grow: 0;
+  max-width: 100px;
 }

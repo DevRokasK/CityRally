@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 public class Subtask
 {
@@ -7,9 +8,11 @@ public class Subtask
     public int Id { get; set; }
 
     [Column("title")]
+    [MinLength(1)]
     public string? Title { get; set; }
 
     [Column("points")]
+    [RegularExpression("^\\d+$\r\n")]
     public int Points { get; set; }
 
     [Column("isTimed")]

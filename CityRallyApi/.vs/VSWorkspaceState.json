@@ -1,12 +1,13 @@
 {
   "ExpandedNodes": [
     "",
+    "\\Attributes",
     "\\Controllers",
     "\\Data",
     "\\Models",
     "\\Properties",
     "\\Services"
   ],
-  "SelectedNode": "\\Controllers\\EventsController.cs",
+  "SelectedNode": "\\Attributes\\ValidEmailAttribute.cs",
   "PreviewInSolutionExplorer": false
 }

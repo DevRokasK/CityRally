@@ -6,6 +6,8 @@ public class ApplicationDbContext : DbContext
     {
     }
 
+    public DbSet<Admin> Admins { get; set; }
+
     public DbSet<Event> Events { get; set; }
 
     public DbSet<Team> Teams { get; set; }

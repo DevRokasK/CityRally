@@ -11,8 +11,8 @@ export class UserStore {
     public constructor() {
         makeObservable(this);
 
-        this.isAdmin = false;
-        this.isLogedin = true;
+        this.isAdmin = true;
+        this.isLogedin = false;
         this.teamId = 35;
         this.teamSubtasks = [];
     }
@@ -100,5 +100,46 @@ export class UserStore {
     @action
     public removeTS(subtaskId: number) {
         this.teamSubtasks = this.teamSubtasks.filter(subtask => subtask.subtaskId !== subtaskId);
+    }
+
+    @action
+    public async login(email: string, password: string, userType: string) {
+        if (!email) {
+            console.error("Enter email");
+            return false;
+        }
+
+        const loginBody = {
+            userType: userType,
+            email: email,
+            password: password
+        }
+
+        try {
+            const response = await axios.post(`http://localhost:5000/api/Login`, loginBody);
+
+            if (response.status === 200) {
+                this.loginUser(response.data.userType, response.data.teamId);
+                return true;
+            } else {
+                console.error("Failed to login");
+                return false;
+            }
+        } catch (error) {
+            console.error("Error logging in", error);
+            return false;
+        }
+    }
+
+    @action
+    public loginUser(userType: string, teamId?: number) {
+        if (userType === "Admin") {
+            this.isAdmin = true;
+        } else {
+            this.isAdmin = false;
+            this.teamId = teamId;
+        }
+
+        this.isLogedin = true;
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 public enum EventStatus
@@ -17,6 +18,7 @@ public class Event
     public int Id { get; set; }
 
     [Column("title")]
+    [MinLength(1)]
     public string? Title { get; set; }
 
     [Column("description")]

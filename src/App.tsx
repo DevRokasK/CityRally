@@ -1,3 +1,4 @@
+import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
 
@@ -10,10 +11,11 @@ import { Header } from './components/Header/Header';
 import { Footer } from './components/Footer/Footer';
 import { RootStore } from './stores/RootStore';
 import { GuideEventPage } from './pages/GuideEventPage';
+import { ProtectedRoute } from './pages/ProtectedRoute';
 
 
 const App = observer(() => {
-  const store = new RootStore();
+  const [store] = React.useState(() => new RootStore());
 
   return (
     <div className="App">
@@ -22,10 +24,32 @@ const App = observer(() => {
       </header>
       <main>
         <Routes>
-          <Route path='/' element={<Home eventStore={store.eventStore} />} />
-          <Route path='/Event/:id' element={<EventPage eventStore={store.eventStore} />} />
-          <Route path='/Guide/Event/:id' element={<GuideEventPage eventStore={store.eventStore} />} />
-          <Route path='/Login' element={<Login />} />
+          <Route path='/Login'
+            element={
+              <Login userStore={store.userStore} />
+            }
+          />
+          <Route path='/'
+            element={
+              <ProtectedRoute isLogedin={store.userStore.isLogedin}>
+                <Home eventStore={store.eventStore} />
+              </ProtectedRoute>
+            }
+          />
+          <Route path='/Event/:id'
+            element={
+              <ProtectedRoute isLogedin={store.userStore.isLogedin}>
+                <EventPage eventStore={store.eventStore} />
+              </ProtectedRoute>
+            }
+          />
+          <Route path='/Guide/Event/:id'
+            element={
+              <ProtectedRoute isLogedin={store.userStore.isLogedin}>
+                <GuideEventPage eventStore={store.eventStore} />
+              </ProtectedRoute>
+            }
+          />
         </Routes>
       </main>
       <footer>
