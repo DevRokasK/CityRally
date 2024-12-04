@@ -13,9 +13,9 @@ export class UserStore {
     public constructor() {
         makeObservable(this);
 
-        this.isAdmin = true;
+        this.isAdmin = false;
         this.isLogedin = false;
-        this.teamId = 35;
+        this.teamId = 0;
         this.teamSubtasks = [];
     }
 
