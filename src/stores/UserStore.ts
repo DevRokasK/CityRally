@@ -2,6 +2,8 @@ import axios from "axios";
 import { action, makeObservable, observable, runInAction } from "mobx";
 import { ITeamSubtask, TeamSubtask } from "../models/TeamSubtask";
 
+const APIVersion = "2.0";
+
 export class UserStore {
     @observable public isAdmin: boolean;
     @observable public isLogedin: boolean;
@@ -116,7 +118,7 @@ export class UserStore {
         }
 
         try {
-            const response = await axios.post(`http://localhost:5000/api/Login`, loginBody);
+            const response = await axios.post(`http://localhost:5000/api/v:${APIVersion}/LoginV${APIVersion}`, loginBody);
 
             if (response.status === 200) {
                 this.loginUser(response.data.userType, response.data.teamId);
@@ -141,5 +143,61 @@ export class UserStore {
         }
 
         this.isLogedin = true;
+    }
+
+    @action
+    public async resetPassword(email: string, oldPassword: string, newPassword: string) {
+        if (!email || !oldPassword || !newPassword) {
+            return false;
+        }
+
+        const loginBody = {
+            email: email,
+            oldPassword: oldPassword,
+            newPassword: newPassword
+        }
+
+        try {
+            const response = await axios.put(`http://localhost:5000/api/v:${APIVersion}/LoginV${APIVersion}/ChangePassword`, loginBody);
+
+            if (response.status === 200) {
+                return true;
+            } else {
+                console.error("Failed to change passord");
+                return false;
+            }
+        } catch (error) {
+            console.error("Error changing password", error);
+            return false;
+        }
+    }
+
+    @action
+    public async addAdmin(name: string, email: string, password: string, inviteKey: string) {
+        if (!name || !email || !password || !inviteKey) {
+            return false;
+        }
+
+        const loginBody = {
+            id: 0,
+            name: name,
+            email: email,
+            password: password,
+            addKey: inviteKey
+        }
+
+        try {
+            const response = await axios.post(`http://localhost:5000/api/v:${APIVersion}/LoginV${APIVersion}/AddAdmin`, loginBody);
+
+            if (response.status === 200) {
+                return true;
+            } else {
+                console.error("Failed to add a new admin");
+                return false;
+            }
+        } catch (error) {
+            console.error("Error adding a new admin", error);
+            return false;
+        }
     }
 }

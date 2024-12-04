@@ -100,6 +100,7 @@ C:\Users\halo2\Desktop\Uni\IS kūrimas karkasais\city-rally\CityRallyApi\bin\Deb
 C:\Users\halo2\Desktop\Uni\IS kūrimas karkasais\city-rally\CityRallyApi\bin\Debug\net8.0\CityRallyApi.pdb
 C:\Users\halo2\Desktop\Uni\IS kūrimas karkasais\city-rally\CityRallyApi\bin\Debug\net8.0\Azure.Core.dll
 C:\Users\halo2\Desktop\Uni\IS kūrimas karkasais\city-rally\CityRallyApi\bin\Debug\net8.0\Azure.Identity.dll
+C:\Users\halo2\Desktop\Uni\IS kūrimas karkasais\city-rally\CityRallyApi\bin\Debug\net8.0\BCrypt.Net-Next.dll
 C:\Users\halo2\Desktop\Uni\IS kūrimas karkasais\city-rally\CityRallyApi\bin\Debug\net8.0\BouncyCastle.Cryptography.dll
 C:\Users\halo2\Desktop\Uni\IS kūrimas karkasais\city-rally\CityRallyApi\bin\Debug\net8.0\Google.Protobuf.dll
 C:\Users\halo2\Desktop\Uni\IS kūrimas karkasais\city-rally\CityRallyApi\bin\Debug\net8.0\K4os.Compression.LZ4.dll
@@ -169,3 +170,4 @@ C:\Users\halo2\Desktop\Uni\IS kūrimas karkasais\city-rally\CityRallyApi\obj\Deb
 C:\Users\halo2\Desktop\Uni\IS kūrimas karkasais\city-rally\CityRallyApi\obj\Debug\net8.0\CityRallyApi.pdb
 C:\Users\halo2\Desktop\Uni\IS kūrimas karkasais\city-rally\CityRallyApi\obj\Debug\net8.0\CityRallyApi.genruntimeconfig.cache
 C:\Users\halo2\Desktop\Uni\IS kūrimas karkasais\city-rally\CityRallyApi\obj\Debug\net8.0\ref\CityRallyApi.dll
+C:\Users\halo2\Desktop\Uni\IS kūrimas karkasais\city-rally\CityRallyApi\bin\Debug\net8.0\Microsoft.AspNetCore.Mvc.Versioning.dll

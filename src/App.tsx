@@ -4,14 +4,18 @@ import { observer } from 'mobx-react-lite';
 
 import './styles/App.css';
 
+import { RootStore } from './stores/RootStore';
+
 import { Home } from './pages/Home';
 import { EventPage } from './pages/EventPage';
 import { Login } from './pages/Login';
-import { Header } from './components/Header/Header';
-import { Footer } from './components/Footer/Footer';
-import { RootStore } from './stores/RootStore';
 import { GuideEventPage } from './pages/GuideEventPage';
 import { ProtectedRoute } from './pages/ProtectedRoute';
+import { ChangePassword } from './pages/ResetPassword';
+import { AddAdmin } from './pages/AddAdmin';
+
+import { Header } from './components/Header/Header';
+import { Footer } from './components/Footer/Footer';
 
 
 const App = observer(() => {
@@ -27,6 +31,18 @@ const App = observer(() => {
           <Route path='/Login'
             element={
               <Login userStore={store.userStore} />
+            }
+          />
+          <Route path='/ChangePassword'
+            element={
+              <ChangePassword userStore={store.userStore} />
+            }
+          />
+          <Route path='/AddAdmin'
+            element={
+              <ProtectedRoute isLogedin={store.userStore.isLogedin}>
+                <AddAdmin userStore={store.userStore} />
+              </ProtectedRoute>
             }
           />
           <Route path='/'

@@ -13,6 +13,9 @@ export const CommandBarHome = observer(() => {
             <Link to="/Event/new">
                 <ColorButton className="item" variant="contained">New Event</ColorButton>
             </Link>
+            <Link to="/AddAdmin">
+                <ColorButton className="item" variant="contained">Add admin</ColorButton>
+            </Link>
         </div>
     );
 });

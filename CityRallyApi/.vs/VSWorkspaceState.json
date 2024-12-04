@@ -1,13 +1,16 @@
 {
   "ExpandedNodes": [
     "",
-    "\\Attributes",
+    "\\bin",
+    "\\bin\\Debug",
+    "\\bin\\Debug\\net8.0",
     "\\Controllers",
     "\\Data",
+    "\\Hubs",
     "\\Models",
     "\\Properties",
     "\\Services"
   ],
-  "SelectedNode": "\\Attributes\\ValidEmailAttribute.cs",
+  "SelectedNode": "\\Program.cs",
   "PreviewInSolutionExplorer": false
 }

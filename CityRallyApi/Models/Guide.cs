@@ -16,6 +16,7 @@ public class Guide
     public string? Name { get; set; }
 
     [Column("email")]
+    [ValidEmail]
     public string? Email { get; set; }
 
     [Column("status")]

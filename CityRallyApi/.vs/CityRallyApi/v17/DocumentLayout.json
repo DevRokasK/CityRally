@@ -3,22 +3,6 @@
   "WorkspaceRootPath": "C:\\Users\\halo2\\Desktop\\Uni\\IS k\u016Brimas karkasais\\city-rally\\CityRallyApi\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\halo2\\Desktop\\Uni\\IS k\u016Brimas karkasais\\city-rally\\CityRallyApi\\Attributes\\ValidEmailAttribute.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Attributes\\ValidEmailAttribute.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\halo2\\Desktop\\Uni\\IS k\u016Brimas karkasais\\city-rally\\CityRallyApi\\Models\\Login.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Models\\Login.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\halo2\\Desktop\\Uni\\IS k\u016Brimas karkasais\\city-rally\\CityRallyApi\\Controllers\\LoginController.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Controllers\\LoginController.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\halo2\\Desktop\\Uni\\IS k\u016Brimas karkasais\\city-rally\\CityRallyApi\\Models\\Guide.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Models\\Guide.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\halo2\\Desktop\\Uni\\IS k\u016Brimas karkasais\\city-rally\\CityRallyApi\\Program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
@@ -35,66 +19,14 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "ValidEmailAttribute.cs",
-              "DocumentMoniker": "C:\\Users\\halo2\\Desktop\\Uni\\IS k\u016Brimas karkasais\\city-rally\\CityRallyApi\\Attributes\\ValidEmailAttribute.cs",
-              "RelativeDocumentMoniker": "Attributes\\ValidEmailAttribute.cs",
-              "ToolTip": "C:\\Users\\halo2\\Desktop\\Uni\\IS k\u016Brimas karkasais\\city-rally\\CityRallyApi\\Attributes\\ValidEmailAttribute.cs",
-              "RelativeToolTip": "Attributes\\ValidEmailAttribute.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA0AAAAZAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-03T10:48:59.222Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "Login.cs",
-              "DocumentMoniker": "C:\\Users\\halo2\\Desktop\\Uni\\IS k\u016Brimas karkasais\\city-rally\\CityRallyApi\\Models\\Login.cs",
-              "RelativeDocumentMoniker": "Models\\Login.cs",
-              "ToolTip": "C:\\Users\\halo2\\Desktop\\Uni\\IS k\u016Brimas karkasais\\city-rally\\CityRallyApi\\Models\\Login.cs",
-              "RelativeToolTip": "Models\\Login.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAUAAAAPAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-03T10:37:09.752Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "LoginController.cs",
-              "DocumentMoniker": "C:\\Users\\halo2\\Desktop\\Uni\\IS k\u016Brimas karkasais\\city-rally\\CityRallyApi\\Controllers\\LoginController.cs",
-              "RelativeDocumentMoniker": "Controllers\\LoginController.cs",
-              "ToolTip": "C:\\Users\\halo2\\Desktop\\Uni\\IS k\u016Brimas karkasais\\city-rally\\CityRallyApi\\Controllers\\LoginController.cs",
-              "RelativeToolTip": "Controllers\\LoginController.cs",
-              "ViewState": "AQIAACYAAAAAAAAAAAAmwEYAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-03T10:16:56.144Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "Guide.cs",
-              "DocumentMoniker": "C:\\Users\\halo2\\Desktop\\Uni\\IS k\u016Brimas karkasais\\city-rally\\CityRallyApi\\Models\\Guide.cs",
-              "RelativeDocumentMoniker": "Models\\Guide.cs",
-              "ToolTip": "C:\\Users\\halo2\\Desktop\\Uni\\IS k\u016Brimas karkasais\\city-rally\\CityRallyApi\\Models\\Guide.cs",
-              "RelativeToolTip": "Models\\Guide.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAABoAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-03T10:04:45.782Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\halo2\\Desktop\\Uni\\IS k\u016Brimas karkasais\\city-rally\\CityRallyApi\\Program.cs",
               "RelativeDocumentMoniker": "Program.cs",
               "ToolTip": "C:\\Users\\halo2\\Desktop\\Uni\\IS k\u016Brimas karkasais\\city-rally\\CityRallyApi\\Program.cs",
               "RelativeToolTip": "Program.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAABoAAAAAAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-06T14:54:02.938Z",
+              "WhenOpened": "2024-12-04T18:21:08.768Z",
               "EditorCaption": ""
             }
           ]

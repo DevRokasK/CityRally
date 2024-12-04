@@ -9,14 +9,14 @@ body {
 .events {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  height: 800px;
+  height: 740px;
   margin-top: 16px;
 }
 
 .login {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  height: 840px;
+  height: 820px;
   background-color: #A78BE3;
   background-image: linear-gradient(to right, #A78BE3, #D59330);
   border-top: 2px solid #414141;
@@ -34,12 +34,62 @@ body {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   width: 80%;
   max-width: 400px;
-  height: 20%;
-  max-height: 200px;
+  height: 22%;
+  max-height: 240px;
   align-items: center;
+}
+
+.buttonContainer {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
 }
 
 .loginButton {
   flex-grow: 0;
   max-width: 100px;
+  margin-right: 10px;
+  padding-right: 10px;
+}
+
+.changePassword {
+  display: grid;
+  height: 820px;
+  background-color: #A78BE3;
+  background-image: linear-gradient(to right, #A78BE3, #D59330);
+  border-top: 2px solid #414141;
+  justify-items: center;
+  align-items: center;
+}
+
+.changePasswordContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  background-color: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  width: 80%;
+  max-width: 400px;
+  max-height: 400px;
+  align-items: center;
+}
+
+.changePasswordButton {
+  flex-grow: 0;
+  max-width: 200px;
+}
+
+.changePasswordHeader {
+  position: relative;
+  display: flex;
+  align-items: center; 
+  justify-content: center; 
+  width: 100%;
+}
+
+.buttonFloatLeft {
+  position: absolute;
+  left: 0;
 }

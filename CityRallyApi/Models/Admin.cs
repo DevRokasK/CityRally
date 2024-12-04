@@ -10,7 +10,8 @@ public class Admin
 	public string Name { get; set; }
 
 	[Column("email")]
-	public string Email { get; set; }
+    [ValidEmail]
+    public string Email { get; set; }
 
 	[Column("password")]
 	public string Password { get; set; }

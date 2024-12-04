@@ -2,16 +2,19 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+//using Microsoft.AspNetCore.SignalR;
 
-[Route("api/[controller]")]
 [ApiController]
+[Route("api/[controller]")]
 public class TeamSubtaskController : ControllerBase
 {
     private readonly ApplicationDbContext _context;
+    //private readonly IHubContext<TeamSubtaskHub> _hubContext;
 
     public TeamSubtaskController(ApplicationDbContext context)
     {
         _context = context;
+        //_hubContext = hubContext;
     }
 
     [HttpGet("team/{teamId}")]
@@ -38,6 +41,8 @@ public class TeamSubtaskController : ControllerBase
         _context.Team_Subtasks.Add(teamSubtask);
         _context.SaveChanges();
 
+        //await _hubContext.Clients.Group(teamSubtask.TeamId.ToString()).SendAsync("ReceiveTeamSubtaskUpdate", teamSubtask.TeamId);
+
         return CreatedAtAction(nameof(GetTeamSubtasksByTeamId), new { teamId = teamSubtask.TeamId }, teamSubtask);
     }
 
@@ -53,6 +58,8 @@ public class TeamSubtaskController : ControllerBase
 
         _context.Team_Subtasks.Remove(teamSubtask);
         _context.SaveChanges();
+
+        //await _hubContext.Clients.Group(teamSubtask.TeamId.ToString()).SendAsync("ReceiveTeamSubtaskUpdate", teamSubtask.TeamId);
 
         return NoContent();
     }

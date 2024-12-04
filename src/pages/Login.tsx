@@ -3,10 +3,10 @@ import * as React from 'react';
 import { observer } from 'mobx-react-lite';
 
 import "../styles/App.css";
-import { CircularProgress, TextField, Typography } from '@mui/material';
+import { TextField, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { UserStore } from '../stores/UserStore';
-import { ColorButton } from '../components/BaseComponents/Buttons';
+import { ColorButton, OutlinedButton } from '../components/BaseComponents/Buttons';
 
 export interface ILoginProps {
     userStore: UserStore;
@@ -38,6 +38,10 @@ export const Login = observer((props: ILoginProps) => {
         }
     };
 
+    const navigeteToChangePassword = () => {
+        navigate('/ChangePassword');
+    }
+
     return (
         <React.Fragment>
             <div className='login'>
@@ -62,7 +66,10 @@ export const Login = observer((props: ILoginProps) => {
                         value={adminPassword}
                         onChange={(e) => setAdminPassword(e.target.value)}
                     />
-                    <ColorButton className="loginButton" variant="contained" onClick={handleAdminLogin}>Login</ColorButton>
+                    <div className='buttonContainer'>
+                        <ColorButton className="loginButton" variant="contained" onClick={handleAdminLogin}>Login</ColorButton>
+                        <OutlinedButton variant="outlined" onClick={navigeteToChangePassword}>Change Password</OutlinedButton>
+                    </div>
                 </div>
                 <div className='loginContainer'>
                     <Typography variant="h5" component="div">

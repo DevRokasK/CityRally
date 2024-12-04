@@ -5,6 +5,7 @@
     justify-content: left;
     height: 38px;
     padding: 8px 8px;
+    gap: 10px;
 }
 
 .item {
